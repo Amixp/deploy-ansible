@@ -1,0 +1,17 @@
+---
+# file: roles/apt_update/tasks/main.yml
+
+- name: Apt proxy setup
+  template: src=apt.conf dest=/etc/apt/apt.conf mode=0644 owner=root group=root
+  sudo: yes
+  when: proxy is defined
+
+- name: Update apt cache
+  apt: update_cache=yes
+  sudo: yes
+  environment: proxy_env
+
+- name: Upgrade apt
+  apt: upgrade=yes
+  sudo: yes
+  environment: proxy_env

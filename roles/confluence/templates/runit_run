@@ -1,0 +1,16 @@
+#!/bin/sh
+
+export HOME={{ install_dir }}
+export PATH=/usr/local/bin:/usr/bin:/bin
+export LANG=en_US.UTF-8
+
+export CATALINA_HOME={{ install_dir }}
+# export CATALINA_OPTS=
+
+export JAVA_HOME={{ java_home }}
+export JAVA_OPTS="-Xms800m -Xmx800m -XX:MaxPermSize=196m -Dfile.encoding=utf-8 -Djava.awt.headless=true -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true{% if proxy is defined %} -Dhttp.proxyHost=localhost -Dhttp.proxyPort=3128 -Dhttps.proxyHost=localhost -Dhttps.proxyPort=3128{% endif %}"
+
+cd $HOME
+
+exec 2>&1
+exec chpst -u{{ deploy_user_name }} {{ install_dir }}/bin/start-confluence.sh -fg

@@ -1,0 +1,53 @@
+---
+# file: roles/ruby/tasks/main.yml
+
+- name: Install Linux packages for Ruby install
+  apt: package={{ item }} state=latest install_recommends=yes
+  sudo: yes
+  with_items:
+    - autoconf
+    - bison
+    - bzip2
+    - build-essential
+    - curl
+    - gawk
+    - libc6-dev
+    - libgdbm-dev
+    - libffi-dev
+    - libncurses5-dev
+    - libreadline6
+    - libreadline6-dev
+    - libsqlite3-dev
+    - libssl-dev
+    - libtool
+    - libxml2-dev
+    - libxslt1-dev
+    - libyaml-dev
+    - pkg-config
+    - openssl
+    - sqlite3
+    - zlib1g-dev
+
+- name: Download ruby-{{ ruby_version }}
+  get_url: url={{ ruby_url }} dest=/tmp/ruby-{{ ruby_version }}.tar.gz sha256sum={{ ruby_sha256 }}
+
+- name: Extract ruby-{{ ruby_version }}
+  command: tar -xzf /tmp/ruby-{{ ruby_version }}.tar.gz chdir=/tmp
+
+- name: Configure ruby-src
+  command: "./configure --prefix=/opt/ruby-{{ ruby_version }} chdir=/tmp/ruby-{{ ruby_version }}"
+
+- name: Make ruby-src
+  command: make chdir=/tmp/ruby-{{ ruby_version }}
+
+- name: Install ruby-src
+  command: make install chdir=/tmp/ruby-{{ ruby_version }}
+  sudo: yes
+
+- name: Remove ruby src from /tmp
+  shell: "rm -rf /tmp/ruby-*"
+  sudo: yes
+
+- name: Link ruby-{{ ruby_version }}
+  shell: "ln -sf /opt/ruby-{{ ruby_version }} /opt/ruby"
+  sudo: yes

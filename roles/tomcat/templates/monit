@@ -1,0 +1,6 @@
+check process {{ deploy_user_name }}
+  with pidfile /etc/service/{{ deploy_user_name }}/supervise/pid
+  start program = "/usr/bin/sv up {{ deploy_user_name }}"
+  stop program = "/usr/bin/sv down {{ deploy_user_name }}"
+  if failed port 8080 then alert
+  if failed port 8080 for 5 cycles then restart

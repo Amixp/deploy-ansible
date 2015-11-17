@@ -1,0 +1,30 @@
+---
+# file: roles/postgresql/tasks/main.yml
+
+- name: Deinstall postgresql
+  tags: postgresql
+  apt: package={{ item }} state=absent purge=yes
+  sudo: yes
+  with_items:
+    - postgresql-contrib
+    - postgresql
+
+- name: Add Key for Postgresql Repo
+  tags: postgresql
+  apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc state=present
+  sudo: yes
+  environment: proxy_env
+
+- name: Add Postgresql Repo
+  tags: postgresql
+  apt_repository: repo='deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' state=present update_cache=yes
+  sudo: yes
+  environment: proxy_env
+
+- name: Install Postgresql
+  tags: postgresql
+  apt: package={{ item }} state=latest install_recommends=yes
+  sudo: yes
+  with_items:
+    - postgresql-{{ pg_version }}
+    - postgresql-contrib-{{ pg_version }}

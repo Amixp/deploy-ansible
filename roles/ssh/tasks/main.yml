@@ -1,0 +1,24 @@
+---
+# file: roles/common/tasks/main.yml
+
+# - name: Secure sshd
+#   template: src=sshd_config.j2 dest=/etc/ssh/sshd_config owner=root group=root mode=0644
+#   sudo: yes
+
+- name: Set up authorized_keys for the deploy user
+  authorized_key: "user={{ ssh_user.name }} key={{ item }}"
+  with_file:
+    - 'group_files/keys/{{ SSH_KEY }}.pub'
+
+- name: configures SSH daemon
+  sudo: yes
+  lineinfile:
+    dest: '/etc/ssh/sshd_config'
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+  with_items:
+    - { regexp: '^Port', line: 'Port {{ ssh_port }}' }
+    - { regexp: '^PermitRootLogin', line: 'PermitRootLogin no' }
+    - { regexp: 'PasswordAuthentication (yes|no)', line: 'PasswordAuthentication no' }
+  notify:
+    - restart ssh

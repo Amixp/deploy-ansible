@@ -1,0 +1,9 @@
+# Console
+
+sudo -u postgres psql
+
+```
+\h CREATE ROLE
+
+CREATE ROLE toplistapp WITH LOGIN NOSUPERUSER INHERIT CREATEDB NOCREATEROLE NOREPLICATION;
+```

@@ -1,0 +1,48 @@
+---
+# file: roles/docker/tasks/main.yml
+
+- name: Add Key for Docker Repo
+  tags: docker
+  apt_key:
+    keyserver: hkp://pgp.mit.edu:80
+    id: 58118E89F3A912897C070ADBF76221572C52609D
+    state: present
+  sudo: yes
+  environment: proxy_env
+
+- name: Add Docker Repo
+  tags: docker
+  apt_repository:
+    repo: 'deb https://apt.dockerproject.org/repo ubuntu-trusty main'
+    state: present
+    update_cache: yes
+  sudo: yes
+  environment: proxy_env
+
+- name: Install Docker Engine
+  tags: docker
+  apt:
+    name: docker-engine
+    state: latest
+    install_recommends: yes
+  sudo: yes
+
+- name: Add Docker to start on boot
+  service:
+    name: docker
+    enabled: yes
+
+- name: Enable IP Forwarding for Containers
+  copy:
+    src: 70-docker-ip-forwarding.conf
+    dest: /etc/sysctl.d/70-docker-ip-forwarding.conf
+    owner: root
+    group: root
+    mode: 0644
+  sudo: yes
+
+- name: Reload sysctl settings
+  service: name=procps state=started enabled=yes
+  sudo: yes
+
+- include: optional.yml

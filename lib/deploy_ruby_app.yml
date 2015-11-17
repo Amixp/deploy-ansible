@@ -1,0 +1,33 @@
+---
+- name: Install bundler
+  shell: >
+    executable=/usr/bin/zsh source /home/{{ deploy_user_name }}/.zshrc;
+    /opt/{{ ruby_version }}/bin/{{ ruby_version }} -S gem install bundler
+
+- name: Get the App code from {{ git_repo_name }}
+  git: >
+    repo={{ git_repo_name }}
+    dest=/home/{{ deploy_user_name }}/apps/{{ app_name }}
+    version={{ app_version }}
+    depth=1
+    force=yes
+    update=yes
+    accept_hostkey=yes
+  when: git_repo_name is defined
+
+- name: Make App Dir
+  file: path=/home/{{ deploy_user_name }}/apps state=directory
+  when: not git_repo_name is defined
+
+- name: Copy App code archive
+  unarchive: src=../_apps/{{ deploy_user_name }}/src.tgz dest=/home/{{ deploy_user_name }}/apps
+  when: not git_repo_name is defined
+
+- name: Install gems for App
+  shell: >
+    executable=/usr/bin/zsh source /home/{{ deploy_user_name }}/.zshrc;
+    cd /home/{{ deploy_user_name }}/apps/{{ app_name }};
+    bundle install --without=development test
+
+- name: Copy keys for App
+  copy: src=../_apps/{{ deploy_user_name }}/keys dest=/home/{{ deploy_user_name }}/apps/{{ app_name }}

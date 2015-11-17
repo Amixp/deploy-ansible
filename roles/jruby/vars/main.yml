@@ -1,0 +1,5 @@
+---
+jruby_version: 1.7.13
+jruby_url: "http://jruby.org.s3.amazonaws.com/downloads/{{ jruby_version }}/jruby-bin-{{ jruby_version }}.tar.gz"
+# openssl dgst -sha256 file.tbz
+jruby_sha256: faa1cd590f32f3cb92044d9abedf66ccea1d93a24236c877810c9b30e1e0577c

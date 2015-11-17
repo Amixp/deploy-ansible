@@ -1,0 +1,19 @@
+---
+# file: roles/monit/tasks/main.yml
+
+- name: Install monit package
+  apt: package={{ item }} state=latest install_recommends=yes
+  sudo: yes
+  with_items:
+    - monit
+
+- name: Copy monitrc
+  copy: src=monitrc dest=/etc/monit/monitrc mode=0600 owner=root group=root
+  sudo: yes
+
+- name: Copy conf.d files
+  copy: src={{ item }} dest=/etc/monit/conf.d/{{ item }} mode=0600 owner=root group=root
+  sudo: yes
+  with_items:
+  - monit_web
+  notify: restart monit

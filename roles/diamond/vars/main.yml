@@ -1,0 +1,4 @@
+---
+# batch = 5(LoadAverageCollector) + 8(NginxCollector) + 6 (MonitCollector 3 x (nginx, redis))
+batch_size: "{{ diamond_batch_size }}"
+install_deb: "diamond_3.4.266_all.deb"

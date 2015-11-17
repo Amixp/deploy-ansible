@@ -1,0 +1,17 @@
+#!/bin/sh
+
+sv -w 20 start zookeeper || exit 1
+
+export HOME=/opt/kafka
+export PATH=/opt/kafka/bin:/usr/local/bin:/usr/bin:/bin
+export LANG=en_US.UTF-8
+export LC_CTYPE=en_US.UTF-8
+export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+
+export KAFKA_HEAP_OPTS="-Xmx512M -Xms512M"
+export LOG_DIR={{ kafka_log }}
+export KAFKA_LOG4J_OPTS="-Dlog4j.configuration=file:$HOME/config/log4j.properties -Dkafka.logs.dir=$LOG_DIR"
+
+cd $HOME
+exec 2>&1
+exec chpst -ukafka $HOME/bin/kafka-server-start.sh $HOME/config/server.properties

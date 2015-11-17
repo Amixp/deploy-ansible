@@ -1,0 +1,14 @@
+---
+# file: roles/python/tasks/main.yml
+
+- name: Install python packages
+  apt: package={{ item }} state=latest install_recommends=yes
+  sudo: yes
+  with_items:
+  - build-essential
+  - python
+  - python-all
+  - python-dev
+  - python-all-dev
+  - python-pip
+  - python-pkg-resources

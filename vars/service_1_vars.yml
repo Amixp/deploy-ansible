@@ -1,0 +1,12 @@
+---
+cloud_name: aws
+deploy_user_name: {{ deploy_user_name }}
+ruby_version: jruby
+git_repo_from: github.com
+git_repo_name: {{ REPO_NAME }}
+app_env: production
+app_version: master
+graphite_host: {{ graphite_host_name }}
+graphite_path_prefix: {{ PROJECT }}.{{ SERVICE }}.{{ version }}.{{ SUFFIX }}
+# diamond_batch_size = 5(LoadAverageCollector) + 8(NginxCollector) + 9 (MonitCollector 3 x (nginx, redis, service 1))
+diamond_batch_size: 22

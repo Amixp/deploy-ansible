@@ -1,0 +1,7 @@
+---
+proxy_env:
+  in_vagrant: yes
+ssh_port: 22
+java_version: 8
+ssh_user:
+  name: 'vagrant'

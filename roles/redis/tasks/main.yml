@@ -1,0 +1,64 @@
+---
+# file: roles/redis/tasks/main.yml
+
+- name: Tuning sysctl
+  copy: src=65-redis.conf dest=/etc/sysctl.d/65-redis.conf owner=root group=root mode=0644
+  sudo: yes
+
+- name: Reload sysctl settings
+  service: name=procps state=started enabled=yes
+  sudo: yes
+
+- name: Download redis {{ redis_version }}
+  get_url: "url={{ redis_url }} dest=/tmp/redis-{{ redis_version }}.tar.gz sha256sum={{ redis_sha256 }}"
+
+- name: Extract redis {{ redis_version }}
+  shell: "tar -xzf /tmp/redis-{{ redis_version }}.tar.gz chdir=/tmp"
+
+- name: Make redis
+  shell: "make chdir=/tmp/redis-{{ redis_version }}"
+
+- name: Remove redis
+  action: file path={{ install_dir }} state=absent
+  sudo: yes
+
+- name: Install redis
+  shell: "make PREFIX={{ install_dir }} install chdir=/tmp/redis-{{ redis_version }}"
+  sudo: yes
+
+- name: Remove redis src from /tmp
+  shell: "rm -rf /tmp/redis-{{ redis_version }}*"
+
+- name: Add redis user
+  user: name=redis comment="Redis user" createhome=no home=/opt/redis shell=/bin/false
+  sudo: yes
+
+- name: Chown redis dir
+  file: path={{ install_dir }} owner=redis group=redis recurse=yes state=directory
+  sudo: yes
+
+- name: Create redis data dir
+  file: path={{ data_dir }} owner=redis group=redis recurse=yes state=directory
+  sudo: yes
+
+- name: Create redis log dir
+  file: path={{ log_dir }} owner=redis group=redis recurse=yes state=directory
+  sudo: yes
+
+# - name: Copy init.d redis
+#   template: src=redis_init.sh dest=/etc/init.d/redis owner=root group=root mode=755
+#   sudo: yes
+
+- name: Copy upstart redis-server
+  template: src=redis-server.conf dest=/etc/init/redis-server.conf owner=root group=root mode=644
+  sudo: yes
+
+- name: Copy redis.conf
+  template: src=redis.conf dest=/etc/redis.conf owner=root group=root mode=644
+  sudo: yes
+  notify: restart redis
+
+- name: Config for monit
+  template: src=monit dest=/etc/monit/conf.d/redis owner=root group=root mode=0600
+  sudo: yes
+  notify: restart monit

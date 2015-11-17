@@ -1,0 +1,30 @@
+---
+# file: roles/diamond/tasks/main.yml
+
+- name: Copy deb package
+  copy: "src={{ install_deb }} dest=/tmp/{{ install_deb }}"
+  sudo: yes
+
+- name: Install dependencies
+  apt: "package={{ item }} state=latest install_recommends=yes"
+  sudo: yes
+  with_items:
+  - python-support
+  - python-configobj
+
+- name: Install
+  shell: "/usr/bin/dpkg -i /tmp/{{ install_deb }}"
+  sudo: yes
+
+- name: Remove deb package
+  shell: "rm -f /tmp/{{ install_deb }}"
+  sudo: yes
+
+- name: Config
+  template: src=diamond.conf dest=/etc/diamond/diamond.conf mode=0644 owner=root group=root
+  sudo: yes
+
+- name: Config Collectors
+  copy: src=collectors dest=/etc/diamond/ owner=root group=root
+  sudo: yes
+  notify: restart diamond

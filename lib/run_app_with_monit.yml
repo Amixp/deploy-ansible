@@ -1,0 +1,9 @@
+---
+
+- name: Copy monit conf.d files
+  template: src=../_apps/{{ app_name }}/monit dest=/etc/monit/conf.d/{{ app_name }} mode=0600 owner=root group=root
+  sudo: yes
+
+- name: Restart monit
+  service: name=monit state=restarted
+  sudo: yes

@@ -1,0 +1,33 @@
+---
+# file: roles/cntlm/tasks/main.yml
+
+- name: Copy deb
+  tags: cntlm
+  copy: src=cntlm_0.92.3-1ubuntu1_amd64.deb dest=/tmp/ mode=0644
+  sudo: yes
+  when: proxy is defined
+
+- name: Install
+  tags: cntlm
+  apt: deb=/tmp/cntlm_0.92.3-1ubuntu1_amd64.deb
+  sudo: yes
+  when: proxy is defined
+
+- name: Remove deb
+  tags: cntlm
+  shell: "rm -f /tmp/cntlm_0.92.3-1ubuntu1_amd64.deb"
+  sudo: yes
+  when: proxy is defined
+
+- name: Copy Cntlm config
+  tags: cntlm
+  template: src=cntlm.conf dest=/etc/cntlm.conf mode=0644 owner=root group=root
+  sudo: yes
+  when: proxy is defined
+  notify: restart cntlm
+
+- name: Copy environment config
+  tags: cntlm
+  template: src=environment.j2 dest=/etc/environment mode=0644 owner=root group=root
+  sudo: yes
+  when: proxy is defined

@@ -1,0 +1,55 @@
+---
+# file: roles/common/tasks/main.yml
+
+- name: locale gen
+  shell: "sudo locale-gen {{ locale_gen }}"
+
+- name: set /etc/localtime
+  shell: "echo {{ timezone }} | sudo tee /etc/timezone"
+
+- name: tz reconfigure
+  shell: "sudo dpkg-reconfigure -f noninteractive tzdata"
+
+- name: Install NTP
+  apt: package=ntp state=present
+  sudo: yes
+
+- name: Make sure NTP is started up
+  service: name=ntp state=started enabled=yes
+  sudo: yes
+
+- name: "For add ppa:* repos"
+  apt: package=python-software-properties state=present
+  sudo: yes
+
+# cat /etc/sysctl.d/*.conf /etc/sysctl.conf | sudo sysctl -p -
+- name: Tuning sysctl
+  copy: src=60-user.conf dest=/etc/sysctl.d/60-user.conf owner=root group=root mode=0644
+  sudo: yes
+
+- name: Tuning open files limits
+  copy: src=openfiles.conf dest=/etc/security/limits.d/openfiles.conf owner=root group=root mode=0644
+  sudo: yes
+
+- name: Enable limits for sudo
+  copy: src=pamd_sudo dest=/etc/pam.d/sudo owner=root group=root mode=0644
+  sudo: yes
+
+- name: Reload sysctl settings
+  service: name=procps state=started enabled=yes
+  sudo: yes
+
+- name: Add Ubuntu Git Maintainers team Repo
+  apt_repository: repo='ppa:git-core/ppa' state=present update_cache=yes
+  sudo: yes
+  environment: proxy_env
+
+- name: Install some packages
+  apt: package={{ item }} state=latest install_recommends=yes
+  sudo: yes
+  with_items:
+    - tree
+    - htop
+    - git
+    - unzip
+    - wget

@@ -1,0 +1,10 @@
+---
+# tomcat_version: 8.0.18
+# tomcat_url: "http://apache-mirror.rbc.ru/pub/apache/tomcat/tomcat-8/v8.0.18/bin/apache-tomcat-{{ tomcat_version }}.tar.gz"
+# # openssl dgst -sha256 file.tbz
+# tomcat_sha256: 49f9097073493accb8f8e0827d8f4ee00d2cc115b9188fc3902deb3696554379
+
+install_dir: /usr/local/confluence
+home_dir: /usr/local/confluence-data
+deploy_user_name: confluence
+java_home: /usr/lib/jvm/java-8-oracle

@@ -1,0 +1,26 @@
+---
+- name: "Setup node"
+  hosts: kafka
+  gather_facts: no
+  vars:
+    kafka_broker_id: 0
+    kafka_hostname: "kafka.dev"
+    zookeeper_connect: "{{ kafka_hostname }}:2181"
+
+  roles:
+  # - ssh
+  # - apt_update
+  # - common
+  # - runit
+  # - oh-my-zsh
+  # - docker
+  # - java
+  # - ruby
+  # - confluent
+  # - zookeeper
+  # - kafka
+  # - jruby
+  # - monit
+  # - nginx
+  # - redis
+  # - diamond

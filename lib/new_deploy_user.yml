@@ -1,0 +1,24 @@
+---
+- name: Create user
+  user: name={{ user_name }} comment="Deploy User - {{ user_name }}" shell=/usr/bin/zsh
+  sudo: yes
+
+- name: For zsh
+  template: src=../group_files/zshrc.j2 dest=/home/{{ user_name }}/.zshrc owner={{ user_name }} group={{ user_name }} mode=644
+  sudo: yes
+
+- name: Remove bash files
+  command: "rm -f .bashrc .bash_logout .profile chdir=/home/{{ user_name }}"
+  sudo: yes
+
+- name: Set password
+  shell: "echo {{ user_name }}:{{ user_password }} | chpasswd"
+  sudo: yes
+
+- name: Create ssh directories for deployment user
+  file: path=/home/{{ user_name }}/.ssh owner={{ user_name }} group={{ user_name }} mode=700 state=directory
+  sudo: yes
+
+- name: For ssh connect as deployment user
+  copy: src=../_apps/{{ apps_dir }}/authorized_keys_{{ cloud_name }} dest=/home/{{ user_name }}/.ssh/authorized_keys owner={{ user_name }} group={{ user_name }} mode=400
+  sudo: yes

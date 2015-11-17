@@ -1,0 +1,19 @@
+---
+- name: Create security group
+  local_action:
+    module: ec2_group
+    ec2_access_key: "{{ access_key }}"
+    ec2_secret_key: "{{ secret_key }}"
+    name: "{{ security_group }}"
+    description: "Security Group for Yandex.Tank"
+    region: "{{ region }}"
+    rules:
+    - proto: tcp
+      from_port: 8080
+      to_port: 8080
+      cidr_ip: 83.220.49.226/31
+
+    - proto: tcp
+      from_port: 22
+      to_port: 22
+      cidr_ip: 83.220.49.226/31

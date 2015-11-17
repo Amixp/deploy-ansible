@@ -1,0 +1,26 @@
+---
+# file: roles/oh-my-zsh/tasks/main.yml
+
+- name: Install some packages
+  apt: package={{ item }} state=latest install_recommends=yes
+  sudo: yes
+  with_items:
+    - zsh
+
+- name: Install oh-my-zsh
+  git: repo='https://github.com/robbyrussell/oh-my-zsh.git'
+       accept_hostkey=yes
+       dest='~/.oh-my-zsh'
+       version=master
+       depth=1
+  environment: proxy_env
+
+- name: Copy zshrc file
+  copy: src=zshrc dest=~/.zshrc mode=0644
+
+- name: Change bash to zsh for current user
+  user: name={{ ssh_user.name }} shell=/bin/zsh
+  sudo: yes
+
+- name: Remove bash files
+  shell: "rm -f ~/.bash* ~/.profile"

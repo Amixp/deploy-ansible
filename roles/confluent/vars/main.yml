@@ -1,0 +1,9 @@
+---
+confluent_version: 1.0.1
+confluent_url: http://packages.confluent.io/archive/1.0/confluent-1.0.1-2.10.4.tar.gz
+# openssl dgst -sha256 file.tbz
+confluent_sha256: e8a6b87075fa1a6505bcbf00e38d840c9503550a3b6ac4c454cdc73132f0271f
+
+user:
+  name: confluent
+  shell: /bin/nologin

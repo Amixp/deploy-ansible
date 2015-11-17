@@ -1,0 +1,10 @@
+---
+# file: roles/yandex-tank/tasks/main.yml
+
+- name: Install ppa
+  apt_repository: repo='ppa:yandex-load/main' state=present update_cache=yes
+  sudo: yes
+
+- name: Install yandex.tank
+  apt: package=yandex-load-tank-base state=latest install_recommends=yes
+  sudo: yes

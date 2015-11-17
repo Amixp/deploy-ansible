@@ -1,0 +1,39 @@
+#!/bin/bash
+
+export HOME=/opt/zookeeper
+export PATH=/opt/zookeeper/bin:/usr/local/bin:/usr/bin:/bin
+export LANG=en_US.UTF-8
+export LC_CTYPE=en_US.UTF-8
+export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+
+ZOOBINDIR="$HOME/bin"
+ZOOCFGDIR="$HOME/conf"
+ZOOCFG="$ZOOCFGDIR/zookeeper.properties"
+ZOO_LOG_DIR={{ zookeeper_log }}
+ZOO_LOG4J_PROP="INFO,CONSOLE"
+
+ZOOMAIN="org.apache.zookeeper.server.quorum.QuorumPeerMain"
+CLASSPATH="$ZOOCFGDIR:$CLASSPATH"
+
+LIBPATH=("${HOME}"/lib/*.jar)
+for i in "${LIBPATH[@]}"
+do
+    CLASSPATH="$i:$CLASSPATH"
+done
+
+for i in "$HOME"/zookeeper-*.jar
+do
+  CLASSPATH="$i:$CLASSPATH"
+done
+
+
+if [ "x$SERVER_JVMFLAGS"  != "x" ]
+then
+    JVMFLAGS="$SERVER_JVMFLAGS $JVMFLAGS"
+fi
+
+
+cd $HOME
+exec 2>&1
+exec java "-Dzookeeper.log.dir=${ZOO_LOG_DIR}" "-Dzookeeper.root.logger=${ZOO_LOG4J_PROP}" \
+    -cp "$CLASSPATH" $JVMFLAGS $ZOOMAIN "$ZOOCFG"

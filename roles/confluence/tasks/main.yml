@@ -1,0 +1,84 @@
+---
+# file: roles/confluence/tasks/main.yml
+
+# - name: Download confluence
+#   get_url: "url={{ confluence_url }} dest=/tmp/apache-confluence-{{ confluence_version }}.tar.gz sha256sum={{ confluence_sha256 }}"
+# environment: proxy_env
+
+- name: Extract confluence
+  shell: "tar -xzf /tmp/atlassian-confluence-5.7.tar.gz chdir=/tmp"
+
+- name: Remove downloaded files
+  action: file path=/tmp/atlassian-confluence-5.7.tar.gz state=absent
+  sudo: yes
+
+- name: Move confluence files
+  shell: "mv /tmp/atlassian-confluence-5.7 {{ install_dir }}"
+  sudo: yes
+
+- name: Create confluence home directory
+  file: path={{ home_dir }} state=directory
+  sudo: yes
+
+- name: Copy confluence-init.properties
+  template: src=confluence-init.properties dest={{ install_dir }}/confluence/WEB-INF/classes/confluence-init.properties
+  sudo: yes
+
+- name: Add user
+  user: name={{ deploy_user_name }} comment="{{ deploy_user_name }} user" createhome=no home={{ install_dir }} shell=/bin/false
+  sudo: yes
+
+- name: Chown confluence install dir
+  file: path={{ install_dir }} owner={{ deploy_user_name }} group={{ deploy_user_name }} recurse=yes state=directory
+  sudo: yes
+
+- name: Chown confluence home dir
+  file: path={{ home_dir }} owner={{ deploy_user_name }} group={{ deploy_user_name }} recurse=yes state=directory
+  sudo: yes
+
+- name: Create runit-run dir
+  file: path=/etc/sv/{{ deploy_user_name }} owner=root group=root mode=755 state=directory
+  sudo: yes
+
+- name: Create runit-log dir for
+  file: path=/etc/sv/{{ deploy_user_name }}/log owner=root group=root mode=755 state=directory
+  sudo: yes
+
+- name: Copy runit-run config
+  template: src=runit_run dest=/etc/sv/{{ deploy_user_name }}/run owner=root group=root mode=755
+  sudo: yes
+
+- name: Copy runit-log config
+  template: src=runit_log dest=/etc/sv/{{ deploy_user_name }}/log/run owner=root group=root mode=755
+  sudo: yes
+
+- name: Create runit Log dir
+  file: path=/var/log/runit/{{ deploy_user_name }} owner=root group=root mode=755 state=directory
+  sudo: yes
+
+- name: Copy runit Log dir config
+  template: src=runit-logdir-config dest=/var/log/runit/{{ deploy_user_name }}/config owner=root group=root mode=644
+  sudo: yes
+
+- name: Check service dir exists
+  stat: path=/etc/service/{{ deploy_user_name }}
+  register: p
+
+- name: Stop App
+  shell: "rm /etc/service/{{ deploy_user_name }}; sleep 5"
+  sudo: yes
+  when: p.stat.exists == true
+
+- name: Link App
+  shell: "ln -sf /etc/sv/{{ deploy_user_name }} /etc/service/"
+  sudo: yes
+
+- name: Copy nginx conf.d file
+  template: src=nginx.j2 dest=/etc/nginx/conf.d/{{ deploy_user_name }}.conf mode=0644 owner=root group=root
+  sudo: yes
+  notify: restart nginx
+
+- name: Config for monit
+  template: src=monit dest=/etc/monit/conf.d/{{ deploy_user_name }} mode=0600 owner=root group=root
+  sudo: yes
+  notify: restart monit

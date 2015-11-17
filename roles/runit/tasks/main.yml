@@ -1,0 +1,16 @@
+---
+# file: roles/runit/tasks/main.yml
+
+- name: Install packages for runit
+  apt: package={{ item }} state=latest install_recommends=yes
+  sudo: yes
+  with_items:
+  - runit
+
+- name: Make sure runit is started up
+  service: name=runsvdir state=started enabled=yes
+  sudo: yes
+
+- name: Create Runit log folder
+  file: dest=/var/log/runit mode=755 state=directory owner=root group=root
+  sudo: yes

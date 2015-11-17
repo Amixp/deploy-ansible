@@ -1,0 +1,75 @@
+---
+# file: roles/confluent/tasks/main.yml
+
+- name: Create user
+  user:
+    name: "{{ user.name }}"
+    comment: "Deploy User - {{ user.name }}"
+    shell: "{{ user.shell }}"
+    createhome: no
+    home: /opt/confluent
+    system: yes
+  sudo: yes
+
+- name: Download
+  get_url:
+    url: "{{ confluent_url }}"
+    dest: "/tmp/confluent.tar.gz"
+    sha256sum: "{{ confluent_sha256 }}"
+
+- name: Extract
+  shell: "tar -xzf /tmp/confluent.tar.gz -C /opt/ && ln -sf /opt/confluent-{{ confluent_version }} /opt/confluent && chown -R {{ user.name }}:{{ user.name }} /opt/confluent* && rm -f /tmp/confluent.tar.gz chdir=/tmp"
+  sudo: yes
+
+- name: Create dirs
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0755
+  with_items:
+  - "/var/opt/zookeeper"
+  - "/var/opt/kafka"
+  - "/var/log/kafka"
+  sudo: yes
+
+- name: Copy log4j config
+  template:
+    src: log4j.properties
+    dest: /opt/confluent/etc/kafka/log4j.properties
+    mode: 0644
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+  sudo: yes
+
+- name: Copy zookeeper config
+  template:
+    src: zookeeper.properties
+    dest: /opt/confluent/etc/kafka/zookeeper.properties
+    mode: 0644
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+  sudo: yes
+
+- name: Copy kafka server config
+  template:
+    src: server.properties
+    dest: /opt/confluent/etc/kafka/server.properties
+    mode: 0644
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+  sudo: yes
+
+- name: Copy schema-registry config
+  template:
+    src: schema-registry.properties
+    dest: /opt/confluent/etc/schema-registry/schema-registry.properties
+    mode: 0644
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+  sudo: yes
+
+- include: ../../../lib/run_app_with_runit.yml app_name=confluent-zookeeper
+- include: ../../../lib/run_app_with_runit.yml app_name=confluent-kafka
+- include: ../../../lib/run_app_with_runit.yml app_name=confluent-schema-registry

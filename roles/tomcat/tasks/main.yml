@@ -1,0 +1,76 @@
+---
+# file: roles/tomcat/tasks/main.yml
+
+- name: Download tomcat
+  get_url: "url={{ tomcat_url }} dest=/tmp/apache-tomcat-{{ tomcat_version }}.tar.gz sha256sum={{ tomcat_sha256 }}"
+environment: proxy_env
+
+- name: Extract tomcat
+  shell: "tar -xzf /tmp/apache-tomcat-{{ tomcat_version }}.tar.gz chdir=/tmp"
+
+- name: Move tomcat files
+  shell: "mv /tmp/apache-tomcat-{{ tomcat_version }} {{ install_dir }}"
+  sudo: yes
+
+- name: Remove downloaded files
+  action: file path=/tmp/apache-tomcat-{{ tomcat_version }}.tar.gz state=absent
+  sudo: yes
+
+- name: Add user
+  user: name={{ deploy_user_name }} comment="{{ deploy_user_name }} user" createhome=no home={{ install_dir }} shell=/bin/false
+  sudo: yes
+
+- name: Chown tomcat dir
+  file: path={{ install_dir }} owner={{ deploy_user_name }} group={{ deploy_user_name }} recurse=yes state=directory
+  sudo: yes
+
+- name: Create runit-run dir
+  file: path=/etc/sv/{{ deploy_user_name }} owner=root group=root mode=755 state=directory
+  sudo: yes
+
+- name: Create runit-log dir for
+  file: path=/etc/sv/{{ deploy_user_name }}/log owner=root group=root mode=755 state=directory
+  sudo: yes
+
+- name: Copy runit-run config
+  template: src=runit_run dest=/etc/sv/{{ deploy_user_name }}/run owner=root group=root mode=755
+  sudo: yes
+
+- name: Copy runit-log config
+  template: src=runit_log dest=/etc/sv/{{ deploy_user_name }}/log/run owner=root group=root mode=755
+  sudo: yes
+
+- name: Create runit Log dir
+  file: path=/var/log/runit/{{ deploy_user_name }} owner=root group=root mode=755 state=directory
+  sudo: yes
+
+- name: Copy runit Log dir config
+  template: src=runit-logdir-config dest=/var/log/runit/{{ deploy_user_name }}/config owner=root group=root mode=644
+  sudo: yes
+
+- name: Check service dir exists
+  stat: path=/etc/service/{{ deploy_user_name }}
+  register: p
+
+- name: Stop App
+  shell: "rm /etc/service/{{ deploy_user_name }}; sleep 5"
+  sudo: yes
+  when: p.stat.exists == true
+
+- name: Link App
+  shell: "ln -sf /etc/sv/{{ deploy_user_name }} /etc/service/"
+  sudo: yes
+
+- name: Remove nginx status.conf (free port 8080)
+  file: path=/etc/nginx/conf.d/status.conf state=absent
+  sudo: yes
+
+- name: Copy nginx conf.d file
+  template: src=nginx.j2 dest=/etc/nginx/conf.d/{{ deploy_user_name }}.conf mode=0644 owner=root group=root
+  sudo: yes
+  notify: restart nginx
+
+- name: Config for monit
+  template: src=monit dest=/etc/monit/conf.d/{{ deploy_user_name }} mode=0600 owner=root group=root
+  sudo: yes
+  notify: restart monit

@@ -1,0 +1,4 @@
+check process redis with pidfile {{ pid_file }}
+start program = "/usr/sbin/service redis-server start"
+stop program = "/usr/sbin/service redis-server stop"
+group redis

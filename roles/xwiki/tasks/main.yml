@@ -1,0 +1,55 @@
+---
+# file: roles/xwiki/tasks/main.yml
+
+# - name: Add Key for xwiki Repo
+#   tags: xwiki
+#   apt_key: url=http://maven.xwiki.org/public.gpg state=present
+#   sudo: yes
+#   environment: proxy_env
+
+# - name: Add xwiki Repo
+#   tags: xwiki
+#   apt_repository: repo='deb http://maven.xwiki.org stable/' state=present update_cache=yes
+#   sudo: yes
+#   environment: proxy_env
+
+# - name: Install xwiki
+#   tags: xwiki
+#   action: apt pkg=xwiki-enterprise-tomcat7-pgsql state=latest force=yes install_recommends=yes
+#   sudo: yes
+
+# - name: Remove nginx status.conf (free port 8080)
+#   file: path=/etc/nginx/conf.d/status.conf state=absent
+#   sudo: yes
+
+# - name: Copy nginx conf.d file
+#   template: src=nginx.j2 dest=/etc/nginx/conf.d/xwiki.conf mode=0644 owner=root group=root
+#   sudo: yes
+#   notify: restart nginx
+
+- name: xwiki.cfg
+  template: src=xwiki.cfg dest=/etc/xwiki/xwiki.cfg owner=root group=root mode=0644
+  sudo: yes
+
+- name: tomcat7
+  template: src=tomcat7 dest=/etc/default/tomcat7 owner=root group=root mode=0644
+  sudo: yes
+
+# - name: XWiki as root webapp. Step 1
+#   template: src=xwiki-tomcat.xml dest=/etc/xwiki/xwiki-tomcat.xml owner=root group=root mode=0644
+#   sudo: yes
+
+# - name: XWiki as root webapp. Step 2
+#   file: path=/etc/tomcat7/Catalina/localhost/xwiki.xml state=absent
+#   sudo: yes
+
+# - name: XWiki as root webapp. Step 3
+#   file: src=/etc/xwiki/xwiki-tomcat.xml dest=/etc/tomcat7/Catalina/localhost/ROOT.xml owner=root group=root mode=0644 state=link
+#   sudo: yes
+#   notify: restart tomcat
+
+
+# - name: Config for monit
+#   copy: src=monit dest=/etc/monit/conf.d/tomcat7 mode=0600 owner=root group=root
+#   sudo: yes
+#   notify: restart monit
