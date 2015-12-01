@@ -2,5 +2,4 @@
 kafka
 
 [kafka]
-192.168.2.184 hostname=kafka
-# 192.168.3.49 hostname=kafka
+10.211.55.4 hostname=kafka
