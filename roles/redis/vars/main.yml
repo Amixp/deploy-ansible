@@ -1,11 +1,11 @@
 ---
-redis_version: 2.8.12
+redis_version: 3.0.5
 redis_url: "http://download.redis.io/releases/redis-{{ redis_version }}.tar.gz"
 # openssl dgst -sha256 file.tbz
-redis_sha256: 9f9077c6b8f8b54f2d2269aab37e2080f6d88c4e90a75b610ed65681611f314d
+redis_sha256: 4c176826eee909fbdc63db1c15adc22aab42d758043829e556f4331e6a5bd480
 
 install_dir: /opt/redis
-data_dir: /var/lib/redis
+data_dir: /var/opt/redis
 log_dir: /var/log/redis
 
 socket_file: /tmp/redis.sock

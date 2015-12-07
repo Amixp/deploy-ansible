@@ -45,16 +45,12 @@
   file: path={{ log_dir }} owner=redis group=redis recurse=yes state=directory
   sudo: yes
 
-# - name: Copy init.d redis
-#   template: src=redis_init.sh dest=/etc/init.d/redis owner=root group=root mode=755
-#   sudo: yes
-
-- name: Copy upstart redis-server
-  template: src=redis-server.conf dest=/etc/init/redis-server.conf owner=root group=root mode=644
+- name: Copy redis.conf
+  template: src=redis.conf.j2 dest=/etc/redis.conf owner=root group=root mode=644
   sudo: yes
 
-- name: Copy redis.conf
-  template: src=redis.conf dest=/etc/redis.conf owner=root group=root mode=644
+- name: Copy upstart redis-server
+  template: src=upstart-redis-server.conf.j2 dest=/etc/init/redis-server.conf owner=root group=root mode=644
   sudo: yes
   notify: restart redis
 
