@@ -6,6 +6,6 @@ set statefile /var/lib/monit/state
 
 set eventqueue
     basedir /var/lib/monit/events # set the base directory where events will be stored
-    slots 10                      # optionally limit the queue size
+    slots 100                     # optionally limit the queue size
 
 include /etc/monit/conf.d/*
