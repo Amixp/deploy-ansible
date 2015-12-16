@@ -1,4 +1,4 @@
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-HTTP_PROXY="http://localhost:3128"
-HTTPS_PROXY="http://localhost:3128"
-FTP_PROXY="http://localhost:3128"
+HTTP_PROXY="{{ proxy_env.http_proxy }}"
+HTTPS_PROXY="{{ proxy_env.https_proxy }}"
+FTP_PROXY="{{ proxy_env.ftp_proxy }}"

@@ -1,10 +1,14 @@
 ---
 # file: roles/jruby/tasks/main.yml
 
-- name: Download jruby {{ jruby_version }}
-  get_url: "url={{ jruby_url }} dest=/tmp/jruby-bin-{{ jruby_version }}.tar.gz sha256sum={{ jruby_sha256 }}"
+- name: Download jruby
+  get_url:
+    url: "{{ jruby_url }}"
+    dest: "/tmp/jruby-bin-{{ jruby_version }}.tar.gz"
+    sha256sum: "{{ jruby_sha256 }}"
+    validate_certs: no
 
-- name: Extract ruby {{ jruby_version }}
+- name: Extract ruby
   shell: "tar -xzf /tmp/jruby-bin-{{ jruby_version }}.tar.gz -C /opt/ && ln -sf /opt/jruby-{{ jruby_version }} /opt/jruby chdir=/tmp"
   sudo: yes
 

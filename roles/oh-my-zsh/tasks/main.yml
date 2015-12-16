@@ -6,17 +6,26 @@
   sudo: yes
   with_items:
     - zsh
+    - git
 
 - name: Install oh-my-zsh
-  git: repo='https://github.com/robbyrussell/oh-my-zsh.git'
-       accept_hostkey=yes
-       dest='~/.oh-my-zsh'
-       version=master
-       depth=1
+  git:
+    repo: "https://github.com/robbyrussell/oh-my-zsh.git"
+    accept_hostkey: yes
+    dest: "~/.oh-my-zsh"
+    version: master
+    depth: 1
   environment: proxy_env
+  become: yes
+  become_user: "{{ ssh_user.name }}"
 
 - name: Copy zshrc file
-  copy: src=zshrc dest=~/.zshrc mode=0644
+  copy:
+    src: zshrc
+    dest: ~/.zshrc
+    mode: 0644
+  become: yes
+  become_user: "{{ ssh_user.name }}"
 
 - name: Change bash to zsh for current user
   user: name={{ ssh_user.name }} shell=/bin/zsh

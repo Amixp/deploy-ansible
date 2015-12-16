@@ -14,7 +14,18 @@
   apt: package=ntp state=present
   sudo: yes
 
-- name: Make sure NTP is started up
+- name: Config NTP
+  template:
+    src: ntp.conf.j2
+    dest: /etc/ntp.conf
+    mode: 0644
+    owner: root
+    group: root
+  when: time_server is defined
+  notify: restart ntp
+  sudo: yes
+
+- name: Config
   service: name=ntp state=started enabled=yes
   sudo: yes
 

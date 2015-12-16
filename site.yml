@@ -1,18 +1,20 @@
 ---
 - name: "Setup node"
-  hosts: kafka
-  gather_facts: no
+  hosts: barcode-1s
+  gather_facts: yes
   vars:
     kafka_broker_id: 0
     kafka_hostname: "kafka.dev"
     zookeeper_connect: "{{ kafka_hostname }}:2181"
 
   roles:
-  # - ssh
+  # - sudo_user
+  # - cntlm
   # - apt_update
+  # - oh-my-zsh
+  # - ssh
   # - common
   # - runit
-  # - oh-my-zsh
   # - docker
   # - java
   # - ruby

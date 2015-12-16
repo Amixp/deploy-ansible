@@ -17,6 +17,9 @@ tar xzf src.tgz
 
 sudo apt-key adv --keyserver-options http-proxy=http://localhost:3128/ --keyserver keyserver.ubuntu.com --recv-keys A1715D88E1DF1F24
 
+# Add sudo user
+
+ansible-playbook site.yml -u root --ask-pass
 
 # #########
 # Vagrant
