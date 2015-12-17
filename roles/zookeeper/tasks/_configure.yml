@@ -1,0 +1,40 @@
+---
+- name: Remove src
+  shell: "rm -rf {{ item }} chdir={{ zookeeper_home }}-{{ zookeeper_version }}"
+  with_items:
+  - "./bin/*.cmd"
+  - "./conf/zoo*.cfg"
+  - "./conf/log4j.properties"
+  - "./contrib"
+  - "./dist-maven"
+  - "./docs"
+  - "./recipes"
+  - "./src"
+  - "./*.xml"
+  - "./*.txt"
+  - "./zookeeper-*.jar.*"
+  sudo: yes
+
+- name: Create dirs
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ zk_user.name }}"
+    group: "{{ zk_user.name }}"
+    mode: 0755
+  with_items:
+  - "{{ zookeeper_dirs }}"
+  - "{{ zookeeper_log }}"
+  sudo: yes
+
+- name: Copy zookeeper config
+  template:
+    src: zookeeper.properties.j2
+    dest: "{{ zookeeper_home }}/conf/{{ item }}"
+    owner: "{{ zk_user.name }}"
+    group: "{{ zk_user.name }}"
+    mode: 0644
+  sudo: yes
+  with_items:
+  - zookeeper.properties
+  - log4j.properties

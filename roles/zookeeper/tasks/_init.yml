@@ -1,0 +1,9 @@
+---
+- name: Create {{ zookeeper_dirs }}/myid file
+  template:
+    src: myid.j2
+    dest: "{{ zookeeper_dirs }}/myid"
+    owner: "{{ zk_user.name }}"
+    group: "{{ zk_user.name }}"
+    mode: 0644
+  sudo: yes

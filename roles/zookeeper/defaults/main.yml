@@ -1,0 +1,13 @@
+---
+zookeeper_version: 3.4.7
+zookeeper_url: "http://www.eu.apache.org/dist/zookeeper/zookeeper-{{ zookeeper_version }}/zookeeper-{{ zookeeper_version }}.tar.gz"
+# openssl dgst -sha256 file.tbz
+zookeeper_sha256: 2e043e04c4da82fbdb38a68e585f3317535b3842c726e0993312948afcc83870
+
+zookeeper_home: "/opt/zookeeper"
+zookeeper_dirs: "/var/opt/zookeeper"
+zookeeper_log: "/var/log/zookeeper"
+
+zk_user:
+  name: zookeeper
+  shell: /bin/nologin

@@ -1,0 +1,24 @@
+---
+- name: Create user
+  user:
+    name: "{{ zk_user.name }}"
+    comment: "Deploy User - {{ zk_user.name }}"
+    shell: "{{ zk_user.shell }}"
+    createhome: no
+    home: "{{ zookeeper_home }}"
+    system: yes
+  sudo: yes
+
+- name: Download
+  get_url:
+    url: "{{ zookeeper_url }}"
+    dest: "/tmp"
+    sha256sum: "{{ zookeeper_sha256 }}"
+    timeout: 30
+    use_proxy: yes
+  sudo: yes
+  environment: proxy_env
+
+- name: Extract
+  shell: "tar -xzf /tmp/zookeeper.tar.gz -C /opt/ && ln -sf {{ zookeeper_home }}-{{ zookeeper_version }} {{ zookeeper_home }} && chown -R {{ zk_user.name }}:{{ zk_user.name }} {{ zookeeper_home }}* && rm -f /tmp/zookeeper.tar.gz chdir=/tmp"
+  sudo: yes
