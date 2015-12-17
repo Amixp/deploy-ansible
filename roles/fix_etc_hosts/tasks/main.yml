@@ -1,0 +1,19 @@
+# file: roles/fix_etc_hosts/tasks/main.yml
+
+- name: Edit /etc/hosts
+  lineinfile:
+    dest: /etc/hosts
+    state: absent
+    regexp: '^127.+'
+
+- name: Edit /etc/hosts ipv4
+  shell: "echo 127.0.0.1 localhost >> /etc/hosts"
+
+- name: Edit /etc/hosts ipv4
+  shell: "echo {{ ansible_all_ipv4_addresses[0] }} {{ inventory_hostname }} {{ ansible_hostname }} >> /etc/hosts"
+
+- name: Edit /etc/hosts ipv6
+  shell: "echo {{ ansible_all_ipv6_addresses[0] }} {{ inventory_hostname }} {{ ansible_hostname }} >> /etc/hosts"
+
+- name: Edit /etc/hostname
+  shell: "echo {{ ansible_hostname }} > /etc/hostname"

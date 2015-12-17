@@ -1,0 +1,25 @@
+---
+- name: set /etc/localtime
+  shell: "echo {{ timezone }} | sudo tee /etc/timezone"
+
+- name: tz reconfigure
+  shell: "sudo dpkg-reconfigure -f noninteractive tzdata"
+
+- name: Install NTP
+  apt: package=ntp state=present
+  sudo: yes
+
+- name: Config NTP
+  template:
+    src: ntp.conf.j2
+    dest: /etc/ntp.conf
+    mode: 0644
+    owner: root
+    group: root
+  when: time_server is defined
+  notify: restart ntp
+  sudo: yes
+
+- name: Config
+  service: name=ntp state=started enabled=yes
+  sudo: yes

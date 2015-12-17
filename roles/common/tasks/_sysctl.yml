@@ -1,0 +1,17 @@
+---
+# cat /etc/sysctl.d/*.conf /etc/sysctl.conf | sudo sysctl -p -
+- name: Tuning sysctl
+  copy: src=60-user.conf dest=/etc/sysctl.d/60-user.conf owner=root group=root mode=0644
+  sudo: yes
+
+- name: Tuning open files limits
+  copy: src=openfiles.conf dest=/etc/security/limits.d/openfiles.conf owner=root group=root mode=0644
+  sudo: yes
+
+- name: Enable limits for sudo
+  copy: src=pamd_sudo dest=/etc/pam.d/sudo owner=root group=root mode=0644
+  sudo: yes
+
+- name: Reload sysctl settings
+  service: name=procps state=started enabled=yes
+  sudo: yes

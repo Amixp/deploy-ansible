@@ -4,14 +4,14 @@
 - name: Apt proxy setup
   template: src=apt.conf dest=/etc/apt/apt.conf mode=0644 owner=root group=root
   sudo: yes
-  when: proxy is defined
+  when: proxy_name is defined
 
 - name: Update apt cache
-  apt: update_cache=yes
+  apt: update_cache=yes force=yes
   sudo: yes
   environment: proxy_env
 
 - name: Upgrade apt
-  apt: upgrade=yes
+  apt: upgrade=yes force=yes
   sudo: yes
   environment: proxy_env

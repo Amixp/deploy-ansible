@@ -1,5 +1,5 @@
 ---
-# file: roles/common/tasks/main.yml
+# file: roles/ssh/tasks/main.yml
 
 - name: Set up authorized_keys for the deploy user
   authorized_key:
@@ -7,10 +7,8 @@
     key: "{{ item }}"
   with_file:
     - "group_files/keys/ssh/{{ ssh_key }}.pub"
-  sudo: yes
 
 - name: configures SSH daemon
-  sudo: yes
   lineinfile:
     dest: "/etc/ssh/sshd_config"
     regexp: "{{ item.regexp }}"

@@ -8,6 +8,15 @@
     - zsh
     - git
 
+- name: Load from /etc/profile.d/* env
+  copy:
+    src: zshenv
+    dest: /etc/zsh/zshenv
+    mode: 0644
+    owner: root
+    group: root
+  sudo: yes
+
 - name: Install oh-my-zsh
   git:
     repo: "https://github.com/robbyrussell/oh-my-zsh.git"

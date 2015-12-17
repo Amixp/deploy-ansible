@@ -1,0 +1,9 @@
+- name: "Make initial tasks"
+  hosts: all
+  gather_facts: yes
+  remote_user: root
+
+  roles:
+  - fix_etc_hosts
+  - sudo_user
+  - ssh

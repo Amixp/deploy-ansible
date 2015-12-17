@@ -1,5 +1,9 @@
 ansible all -m ping
 
+# Check facts
+
+ansible host_name -m setup
+
 # SHA256
 openssl dgst -sha256 filename.ext
 

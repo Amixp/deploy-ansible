@@ -21,13 +21,19 @@
 
 - name: Copy Cntlm config
   tags: cntlm
-  template: src=cntlm.conf dest=/etc/cntlm.conf mode=0644 owner=root group=root
+  template: src=cntlm.conf.j2 dest=/etc/cntlm.conf mode=0644 owner=root group=root
   sudo: yes
   when: proxy_name is defined
   notify: restart cntlm
 
 - name: Copy environment config
   tags: cntlm
-  template: src=environment.j2 dest=/etc/environment mode=0644 owner=root group=root
+  template: src=cntlm_proxy.sh.j2 dest=/etc/profile.d/cntlm_proxy.sh mode=0644 owner=root group=root
   sudo: yes
   when: proxy_name is defined
+
+# - name: Copy environment config
+#   tags: cntlm
+#   template: src=environment.j2 dest=/etc/environment mode=0644 owner=root group=root
+#   sudo: yes
+#   when: proxy_name is defined

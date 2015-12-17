@@ -5,14 +5,16 @@
     name: "{{ ssh_user.name }}"
     comment: "Sudo User - {{ ssh_user.name }}"
     shell: /bin/bash
+
+- name: Append user into groups (Ubuntu 14.04)
+  user:
+    name: "{{ ssh_user.name }}"
     groups: "adm,cdrom,sudo,dip,plugdev,libvirtd,lpadmin,sambashare"
     append: yes
-  sudo: yes
-  # remote_user: root
+  when: ansible_lsb.codename == 'trusty'
 
 - name: Set password
   shell: "echo {{ ssh_user.name }}:{{ ssh_user.password }} | chpasswd"
-  sudo: yes
 
 - name: Sudo without password
   lineinfile:
@@ -20,8 +22,3 @@
     state: present
     regexp: "^{{ ssh_user.name }}"
     line: "{{ ssh_user.name }} ALL=(ALL) NOPASSWD: ALL"
-
-- name: Fix hostname
-  shell: "echo 127.0.0.1 localhost {{ ansible_hostname }} >> /etc/hosts"
-  sudo: yes
-
