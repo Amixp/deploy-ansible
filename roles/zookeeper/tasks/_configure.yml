@@ -29,7 +29,7 @@
 
 - name: Copy zookeeper config
   template:
-    src: zookeeper.properties.j2
+    src: "{{ item }}.j2"
     dest: "{{ zookeeper_home }}/conf/{{ item }}"
     owner: "{{ zk_user.name }}"
     group: "{{ zk_user.name }}"

@@ -13,12 +13,23 @@
   get_url:
     url: "{{ zookeeper_url }}"
     dest: "/tmp"
-    sha256sum: "{{ zookeeper_sha256 }}"
-    timeout: 30
-    use_proxy: yes
-  sudo: yes
-  environment: proxy_env
+    checksum: "{{ zookeeper_checksum }}"
+  when: proxy_env is undefined
+
+- name: Download dist
+  shell: "curl -x {{ proxy_env.http_proxy }} {{ zookeeper_url }} -O chdir=/tmp"
+  when: proxy_env is defined
+
+- name: Download sha1 dist
+  shell: "curl -x {{ proxy_env.http_proxy }} {{ zookeeper_sha1_url }} -O chdir=/tmp"
+  when: proxy_env is defined
+
+- name: Check sha256sum
+  shell: "sha1sum -c zookeeper-{{ zookeeper_version }}.tar.gz.sha1 chdir=/tmp"
+  register: check_result
+  failed_when: "'FAILED' in check_result.stdout"
+  when: proxy_env is defined
 
 - name: Extract
-  shell: "tar -xzf /tmp/zookeeper.tar.gz -C /opt/ && ln -sf {{ zookeeper_home }}-{{ zookeeper_version }} {{ zookeeper_home }} && chown -R {{ zk_user.name }}:{{ zk_user.name }} {{ zookeeper_home }}* && rm -f /tmp/zookeeper.tar.gz chdir=/tmp"
+  shell: "tar -xzf /tmp/zookeeper-{{ zookeeper_version }}.tar.gz -C /opt/ && ln -sf {{ zookeeper_home }}-{{ zookeeper_version }} {{ zookeeper_home }} && chown -R {{ zk_user.name }}:{{ zk_user.name }} {{ zookeeper_home }}* && rm -f /tmp/zookeeper-{{ zookeeper_version }}.tar.gz* chdir=/tmp"
   sudo: yes

@@ -1,15 +1,16 @@
 #!/bin/bash
 
-export HOME=/opt/zookeeper
-export PATH=/opt/zookeeper/bin:/usr/local/bin:/usr/bin:/bin
+export HOME={{ app_home_dir }}
 export LANG=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+export PATH=$HOME/bin:$JAVA_HOME/bin:$JAVA_HOME/db/bin:$JAVA_HOME/jre/bin:/usr/local/bin:/usr/bin:/bin
+export JVMFLAGS="-Xms1g -Xmx2g"
 
 ZOOBINDIR="$HOME/bin"
 ZOOCFGDIR="$HOME/conf"
 ZOOCFG="$ZOOCFGDIR/zookeeper.properties"
-ZOO_LOG_DIR={{ zookeeper_log }}
+ZOO_LOG_DIR={{ app_log_dir }}
 ZOO_LOG4J_PROP="INFO,CONSOLE"
 
 ZOOMAIN="org.apache.zookeeper.server.quorum.QuorumPeerMain"

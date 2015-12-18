@@ -1,9 +1,9 @@
 ---
 zookeeper_version: 3.4.7
-zookeeper_url: "http://www.eu.apache.org/dist/zookeeper/zookeeper-{{ zookeeper_version }}/zookeeper-{{ zookeeper_version }}.tar.gz"
+zookeeper_url: "http://apache-mirror.rbc.ru/pub/apache/zookeeper/zookeeper-{{ zookeeper_version }}/zookeeper-{{ zookeeper_version }}.tar.gz"
 # openssl dgst -sha256 file.tbz
-zookeeper_sha256: 2e043e04c4da82fbdb38a68e585f3317535b3842c726e0993312948afcc83870
-
+zookeeper_checksum: "sha1:91bf9d2345879f9c014b0d1c0db326d7331ef73e"
+zookeeper_sha1_url: "http://www.eu.apache.org/dist/zookeeper/zookeeper-3.4.7/zookeeper-3.4.7.tar.gz.sha1"
 zookeeper_home: "/opt/zookeeper"
 zookeeper_dirs: "/var/opt/zookeeper"
 zookeeper_log: "/var/log/zookeeper"

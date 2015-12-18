@@ -4,4 +4,4 @@
 - include: _install_bin.yml
 - include: _configure.yml
 - include: _init.yml
-# - include: ../../../lib/run_app_with_runit.yml app_name=zookeeper zookeeper_log={{ zookeeper_log }}
+- include: ../../../lib/run_app_with_runit.yml app_name=zookeeper app_home_dir={{ zookeeper_home }} app_log_dir={{ zookeeper_log }}
