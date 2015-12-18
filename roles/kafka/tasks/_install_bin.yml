@@ -1,0 +1,43 @@
+---
+- name: Create user
+  user:
+    name: "{{ srv_user.name }}"
+    comment: "Deploy User - {{ srv_user.name }}"
+    shell: "{{ srv_user.shell }}"
+    createhome: no
+    home: "{{ srv_home }}"
+    system: yes
+  sudo: yes
+
+- name: Download
+  get_url:
+    url: "{{ dist_url }}"
+    dest: "/tmp"
+    checksum: "{{ dist_checksum }}"
+  when: proxy_env is undefined
+
+- name: Download dist
+  shell: "curl -x {{ proxy_env.http_proxy }} {{ dist_url }} -O chdir=/tmp"
+  when: proxy_env is defined
+
+- name: Download pgp keys
+  shell: "curl -x {{ proxy_env.http_proxy }} {{ dist_keys_url }} -O chdir=/tmp"
+  when: proxy_env is defined
+
+- name: Download asc file
+  shell: "curl -x {{ proxy_env.http_proxy }} {{ dist_asc_url }} -O chdir=/tmp"
+  when: proxy_env is defined
+
+- name: Check by gpg. 1-Import KEYS
+  shell: "gpg --import KEYS chdir=/tmp"
+  when: proxy_env is defined
+
+- name: Check by gpg. 2-Check
+  shell: "gpg --verify {{ dist_filename }}.asc chdir=/tmp"
+  register: check_result
+  failed_when: "'error' in check_result.stdout"
+  when: proxy_env is defined
+
+- name: Extract
+  shell: "tar -xzf /tmp/{{ dist_filename }} -C /opt/ && ln -sf /opt/kafka_{{ scala_version }}-{{ dist_version }} {{ srv_home }} && chown -R {{ srv_user.name }}:{{ srv_user.name }} {{ srv_home }}* && rm -f /tmp/{{ dist_filename }}* KEYS chdir=/tmp"
+  sudo: yes

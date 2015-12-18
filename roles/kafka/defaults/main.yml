@@ -1,0 +1,16 @@
+---
+scala_version: "2.11"
+dist_version: "0.9.0.0"
+dist_filename: "kafka_{{ scala_version }}-{{ dist_version }}.tgz"
+dist_url: "http://apache-mirror.rbc.ru/pub/apache/kafka/{{ dist_version }}/{{ dist_filename }}"
+# openssl dgst -sha256 file.tbz
+dist_checksum: "sha256:6e20a86cb1c073b83cede04ddb2e92550c77ae8139c4affb5d6b2a44447a4028"
+dist_keys_url: "http://www.eu.apache.org/dist/kafka/KEYS"
+dist_asc_url: "http://www.eu.apache.org/dist/kafka/{{ dist_version }}/{{ dist_filename }}.asc"
+srv_home: "/opt/kafka"
+srv_data_dir: "/var/opt/kafka"
+srv_log_dir: "/var/log/kafka"
+
+srv_user:
+  name: kafka
+  shell: /bin/nologin

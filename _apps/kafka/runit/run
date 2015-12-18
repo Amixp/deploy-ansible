@@ -3,14 +3,15 @@
 sv -w 20 start zookeeper || exit 1
 sleep 10
 
-export HOME=/opt/kafka
-export PATH=/opt/kafka/bin:/usr/local/bin:/usr/bin:/bin
+export HOME={{ app_home_dir }}
 export LANG=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+export PATH=$HOME/bin:$JAVA_HOME/bin:$JAVA_HOME/db/bin:$JAVA_HOME/jre/bin:/usr/local/bin:/usr/bin:/bin
 
-export KAFKA_HEAP_OPTS="-Xmx512M -Xms512M"
-export LOG_DIR={{ kafka_log }}
+export KAFKA_HEAP_OPTS="-Xms4g -Xmx4g -XX:MetaspaceSize=96m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35 -XX:G1HeapRegionSize=16M -XX:MinMetaspaceFreeRatio=50 -XX:MaxMetaspaceFreeRatio=80"
+
+export LOG_DIR={{ app_log_dir }}
 export KAFKA_LOG4J_OPTS="-Dlog4j.configuration=file:$HOME/config/log4j.properties -Dkafka.logs.dir=$LOG_DIR"
 
 cd $HOME

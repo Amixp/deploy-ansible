@@ -3,8 +3,9 @@
 #   ansible-playbook site-node-initial.yml --ask-pass
 # - include: site-node-initial.yml
 
-# - include: site-node-common.yml
-# - include: site-node-java.yml
+- include: site-node-common.yml
+- include: site-node-java.yml
+
 - include: site-node-kafka.yml
 
 

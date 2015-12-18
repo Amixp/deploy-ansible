@@ -24,7 +24,7 @@
   shell: "curl -x {{ proxy_env.http_proxy }} {{ zookeeper_sha1_url }} -O chdir=/tmp"
   when: proxy_env is defined
 
-- name: Check sha256sum
+- name: Check sha1sum
   shell: "sha1sum -c zookeeper-{{ zookeeper_version }}.tar.gz.sha1 chdir=/tmp"
   register: check_result
   failed_when: "'FAILED' in check_result.stdout"

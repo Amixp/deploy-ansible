@@ -1,13 +1,12 @@
 ---
-# - name: "Install zookeeper"
-#   hosts: zookeeper_nodes
-#   gather_facts: yes
-#   roles:
-#   - zookeeper
+- name: "Install zookeeper"
+  hosts: zookeeper_nodes
+  gather_facts: yes
+  roles:
+  - zookeeper
 
 - name: "Install kafka"
-  hosts: barcode_1s
-  # hosts: kafka_nodes
+  hosts: kafka_nodes
   gather_facts: yes
   roles:
   - kafka

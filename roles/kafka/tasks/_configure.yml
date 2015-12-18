@@ -1,0 +1,31 @@
+---
+- name: Remove src
+  shell: "rm -rf {{ item }} chdir={{ srv_home }}"
+  with_items:
+  - "./bin/windows"
+  - "./config/zookeeper.properties"
+  sudo: yes
+
+- name: Create dirs
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ srv_user.name }}"
+    group: "{{ srv_user.name }}"
+    mode: 0755
+  with_items:
+  - "{{ srv_data_dir }}"
+  - "{{ srv_log_dir }}"
+  sudo: yes
+
+- name: Copy configs
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ srv_home }}/config/{{ item }}"
+    mode: 0644
+    owner: "{{ srv_user.name }}"
+    group: "{{ srv_user.name }}"
+  sudo: yes
+  with_items:
+  - server.properties
+  - log4j.properties
