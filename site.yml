@@ -5,20 +5,13 @@
 
 - include: site-node-common.yml
 - include: site-node-java.yml
-
 - include: site-node-kafka.yml
+- include: site-node-app.yml
 
 
 # - name: "Setup node"
 #   hosts: barcode-1s
 #   gather_facts: yes
-#   vars:
-#     kafka_broker_id: 0
-#     kafka_hostname: "kafka.dev"
-#     zookeeper_connect: "{{ kafka_hostname }}:2181"
-
-
-
 #   roles:
   # - docker
   # - ruby

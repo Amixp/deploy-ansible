@@ -3,7 +3,7 @@
 description "Redis Server"
 
 env USER=redis
-env EXEC={{ install_dir }}/bin/redis-server
+env EXEC={{ srv_home }}/bin/redis-server
 env CONF=/etc/redis.conf
 
 start on filesystem or runlevel [23]
@@ -11,7 +11,7 @@ stop on runlevel [!23]
 
 respawn
 
-exec sudo -u $USER sh -c "$EXEC $CONF 2>&1 >> {{ log_dir }}/redis.log"
+exec sudo -u $USER sh -c "$EXEC $CONF 2>&1 >> {{ srv_log_dir }}/redis.log"
 
 post-start script
     PID=`status redis-server | egrep -oi '([0-9]+)$' | head -n1`

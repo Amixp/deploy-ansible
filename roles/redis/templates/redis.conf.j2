@@ -4,7 +4,7 @@ port 6379
 
 tcp-backlog 511
 
-# bind 127.0.0.1 192.168.1.100 10.0.0.1
+bind 127.0.0.1
 
 # unixsocket /tmp/redis.sock
 # unixsocketperm 700
@@ -28,7 +28,7 @@ rdbcompression yes
 rdbchecksum yes
 dbfilename dump.rdb
 
-dir {{ data_dir }}/
+dir {{ srv_data_dir }}/
 
 slave-serve-stale-data yes
 slave-read-only yes

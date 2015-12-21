@@ -1,5 +1,0 @@
----
-jruby_version: 9.0.4.0
-jruby_url: "https://s3.amazonaws.com/jruby.org/downloads/{{ jruby_version }}/jruby-bin-{{ jruby_version }}.tar.gz"
-# openssl dgst -sha256 file.tbz
-jruby_sha256: fcf828c4ad5b92430a349f1e873c067a15e0952d167d07368135c513fe0d18fb

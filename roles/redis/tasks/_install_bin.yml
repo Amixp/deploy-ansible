@@ -1,6 +1,4 @@
 ---
-# file: roles/jruby/tasks/main.yml
-
 - name: Check if dist has been downloaded
   command: test -f /tmp/{{ dist_filename }}
   register: dist_downloaded
@@ -21,8 +19,8 @@
   shell: "{{ dwn_cmd }} {{ dist_url }} chdir=/tmp"
   when: dist_downloaded.rc == 1
 
-- name: Download sha1
-  shell: "{{ dwn_cmd }} {{ dist_sha1_url }} chdir=/tmp"
+- name: Copy checksum
+  copy: src={{ dist_filename }}.sha1 dest=/tmp
 
 - name: Checksum
   shell: "sha1sum -c {{ dist_filename }}.sha1 chdir=/tmp"
@@ -30,5 +28,18 @@
   failed_when: "'FAILED' in check_result.stdout"
 
 - name: Extract
-  shell: "tar -xzf /tmp/{{ dist_filename }} -C /opt/ && ln -sf /opt/jruby-{{ dist_version }} /opt/jruby && rm /tmp/{{ dist_filename }}* chdir=/tmp"
+  shell: "tar -xzf /tmp/{{ dist_filename }} chdir=/tmp"
+
+- name: Make
+  shell: "make chdir=/tmp/redis-{{ dist_version }}"
+
+- name: Remove redis
+  action: file path={{ srv_home }} state=absent
   sudo: yes
+
+- name: Install redis
+  shell: "make PREFIX={{ srv_home }} install chdir=/tmp/redis-{{ dist_version }}"
+  sudo: yes
+
+- name: Remove redis src from /tmp
+  shell: "rm -rf /tmp/{{ dist_filename }}*"

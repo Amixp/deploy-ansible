@@ -1,0 +1,44 @@
+---
+- name: Tuning sysctl
+  copy: src=65-redis.conf dest=/etc/sysctl.d/65-redis.conf owner=root group=root mode=0644
+  sudo: yes
+
+- name: Reload sysctl settings
+  service: name=procps state=started enabled=yes
+  sudo: yes
+
+- name: Create user
+  user:
+    name: "{{ srv_user.name }}"
+    comment: "Deploy User - {{ srv_user.name }}"
+    shell: "{{ srv_user.shell }}"
+    createhome: no
+    home: "{{ srv_home }}"
+    system: yes
+  sudo: yes
+
+- name: Chown redis dir
+  file: path={{ srv_home }} owner={{ srv_user.name }} group={{ srv_user.name }} recurse=yes state=directory
+  sudo: yes
+
+- name: Create data dir
+  file: path={{ srv_data_dir }} owner={{ srv_user.name }} group={{ srv_user.name }} recurse=yes state=directory
+  sudo: yes
+
+- name: Create log dir
+  file: path={{ srv_log_dir }} owner={{ srv_user.name }} group={{ srv_user.name }} recurse=yes state=directory
+  sudo: yes
+
+- name: Copy redis.conf
+  template: src=redis.conf.j2 dest=/etc/redis.conf owner=root group=root mode=644
+  sudo: yes
+
+- name: Copy upstart redis-server
+  template: src=upstart-redis-server.conf.j2 dest=/etc/init/redis-server.conf owner=root group=root mode=644
+  sudo: yes
+  notify: restart redis
+
+- name: Config for monit
+  template: src=monit dest=/etc/monit/conf.d/redis owner=root group=root mode=0600
+  sudo: yes
+  notify: restart monit

@@ -5,5 +5,5 @@
 
   roles:
   - fix_etc_hosts
-  - sudo_user
+  - user_sudo
   - ssh

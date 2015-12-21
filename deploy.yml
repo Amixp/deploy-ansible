@@ -1,0 +1,26 @@
+---
+- include: deploy-setup.yml
+- include: deploy-update.yml
+- include: deploy-run.yml
+
+
+# - name: "Setup node"
+#   hosts: barcode-1s
+#   gather_facts: yes
+#   vars:
+#     kafka_broker_id: 0
+#     kafka_hostname: "kafka.dev"
+#     zookeeper_connect: "{{ kafka_hostname }}:2181"
+
+
+
+#   roles:
+  # - docker
+  # - ruby
+  # - confluent
+  # - zookeeper
+  # - kafka
+  # - jruby
+  # - nginx
+  # - redis
+  # - diamond
