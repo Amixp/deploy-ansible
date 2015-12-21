@@ -1,26 +1,10 @@
 ---
-- include: deploy-setup.yml
-- include: deploy-update.yml
-- include: deploy-run.yml
-
-
-# - name: "Setup node"
-#   hosts: barcode-1s
-#   gather_facts: yes
-#   vars:
-#     kafka_broker_id: 0
-#     kafka_hostname: "kafka.dev"
-#     zookeeper_connect: "{{ kafka_hostname }}:2181"
-
-
-
-#   roles:
-  # - docker
-  # - ruby
-  # - confluent
-  # - zookeeper
-  # - kafka
-  # - jruby
-  # - nginx
-  # - redis
-  # - diamond
+- name: "Deploy App"
+  hosts: app_nodes
+  gather_facts: yes
+  tasks:
+  - include: lib/new_deploy_user.yml user_name={{ app_name }}
+  - include: lib/deploy_ruby_app.yml user_name={{ app_name }}
+  - include: lib/run_app_with_runit.yml user_name={{ app_name }}
+  - include: lib/run_app_with_monit.yml
+  - include: lib/run_app_with_nginx.yml

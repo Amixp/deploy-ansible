@@ -42,4 +42,4 @@
   sudo: yes
 
 - name: Remove redis src from /tmp
-  shell: "rm -rf /tmp/{{ dist_filename }}*"
+  shell: "rm -rf /tmp/redis-{{ dist_version }}*"

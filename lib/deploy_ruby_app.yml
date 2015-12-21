@@ -1,33 +1,53 @@
 ---
 - name: Install bundler
   shell: >
-    executable=/usr/bin/zsh source /home/{{ deploy_user_name }}/.zshrc;
+    executable=/bin/zsh source /home/{{ user_name }}/.zshrc;
     /opt/{{ ruby_version }}/bin/{{ ruby_version }} -S gem install bundler
+  become: yes
+  become_user: "{{ user_name }}"
 
-- name: Get the App code from {{ git_repo_name }}
-  git: >
-    repo={{ git_repo_name }}
-    dest=/home/{{ deploy_user_name }}/apps/{{ app_name }}
-    version={{ app_version }}
-    depth=1
-    force=yes
-    update=yes
-    accept_hostkey=yes
+- name: Git proxy_env
+  shell: "git config --global http.proxy {{ proxy_env.http_proxy }}"
+  become: yes
+  become_user: "{{ user_name }}"
+  when: proxy_env is defined
+
+- name: Get the App code from git
+  tags: update
+  git:
+    repo: "{{ git_repo_name }}"
+    dest: "/home/{{ user_name }}/apps/{{ app_name }}"
+    version: "{{ app_version }}"
+    depth: 1
+    force: yes
+    update: yes
+    accept_hostkey: yes
+  become: yes
+  become_user: "{{ user_name }}"
   when: git_repo_name is defined
 
 - name: Make App Dir
-  file: path=/home/{{ deploy_user_name }}/apps state=directory
+  file: path=/home/{{ user_name }}/apps state=directory
+  become: yes
+  become_user: "{{ user_name }}"
   when: not git_repo_name is defined
 
 - name: Copy App code archive
-  unarchive: src=../_apps/{{ deploy_user_name }}/src.tgz dest=/home/{{ deploy_user_name }}/apps
+  unarchive: src=../_apps/{{ user_name }}/src.tgz dest=/home/{{ user_name }}/apps
+  become: yes
+  become_user: "{{ user_name }}"
   when: not git_repo_name is defined
 
 - name: Install gems for App
+  tags: update
   shell: >
-    executable=/usr/bin/zsh source /home/{{ deploy_user_name }}/.zshrc;
-    cd /home/{{ deploy_user_name }}/apps/{{ app_name }};
+    executable=/bin/zsh source /home/{{ user_name }}/.zshrc;
+    cd /home/{{ user_name }}/apps/{{ app_name }};
     bundle install --without=development test
+  become: yes
+  become_user: "{{ user_name }}"
 
-- name: Copy keys for App
-  copy: src=../_apps/{{ deploy_user_name }}/keys dest=/home/{{ deploy_user_name }}/apps/{{ app_name }}
+# - name: Copy keys for App
+#   copy: src=../_apps/{{ user_name }}/keys dest=/home/{{ user_name }}/apps/{{ app_name }}
+#   become: yes
+#   become_user: "{{ user_name }}"

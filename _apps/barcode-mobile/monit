@@ -1,0 +1,4 @@
+check process {{ app_name }}
+  with pidfile /etc/service/{{ app_name }}/supervise/pid
+  start program = "/usr/bin/sv up {{ app_name }}"
+  stop program = "/usr/bin/sv down {{ app_name }}"

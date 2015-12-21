@@ -1,5 +1,4 @@
 ---
-
 - name: Create runit dir for App
   file: path=/etc/sv/{{ app_name }} owner=root group=root mode=755 state=directory
   sudo: yes
@@ -9,6 +8,7 @@
   sudo: yes
 
 - name: Copy runit config for App
+  tags: update
   template: src=../_apps/{{ app_name }}/runit/run dest=/etc/sv/{{ app_name }}/run owner=root group=root mode=755
   sudo: yes
 
@@ -35,4 +35,9 @@
 
 - name: Link App
   shell: "ln -sf /etc/sv/{{ app_name }} /etc/service/"
+  sudo: yes
+
+- name: Restart App
+  tags: update
+  shell: "sv restart {{ app_name }}"
   sudo: yes

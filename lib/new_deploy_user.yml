@@ -1,24 +1,50 @@
 ---
 - name: Create user
-  user: name={{ user_name }} comment="Deploy User - {{ user_name }}" shell=/usr/bin/zsh
+  user: name={{ user_name }} comment="Deploy User - {{ user_name }}" shell=/bin/zsh
   sudo: yes
 
 - name: For zsh
   template: src=../group_files/zshrc.j2 dest=/home/{{ user_name }}/.zshrc owner={{ user_name }} group={{ user_name }} mode=644
   sudo: yes
+  when: ruby_version is undefined
+
+- name: For zsh with ruby
+  template: src=../group_files/zshrc_ruby.j2 dest=/home/{{ user_name }}/.zshrc owner={{ user_name }} group={{ user_name }} mode=644
+  sudo: yes
+  when: ruby_version is defined
 
 - name: Remove bash files
   command: "rm -f .bashrc .bash_logout .profile chdir=/home/{{ user_name }}"
   sudo: yes
 
 - name: Set password
-  shell: "echo {{ user_name }}:{{ user_password }} | chpasswd"
+  shell: "echo {{ user_name }}:{{ user_name }} | chpasswd"
   sudo: yes
 
 - name: Create ssh directories for deployment user
   file: path=/home/{{ user_name }}/.ssh owner={{ user_name }} group={{ user_name }} mode=700 state=directory
   sudo: yes
 
-- name: For ssh connect as deployment user
-  copy: src=../_apps/{{ apps_dir }}/authorized_keys_{{ cloud_name }} dest=/home/{{ user_name }}/.ssh/authorized_keys owner={{ user_name }} group={{ user_name }} mode=400
+# - name: For ssh connect as deployment user
+#   copy: src=../_apps/{{ apps_dir }}/authorized_keys_{{ cloud_name }} dest=/home/{{ user_name }}/.ssh/authorized_keys owner={{ user_name }} group={{ user_name }} mode=400
+#   sudo: yes
+
+- name: Gems setup
+  copy: src=../group_files/gemrc dest=/home/{{ user_name }}/.gemrc owner={{ user_name }} group={{ user_name }} mode=644
   sudo: yes
+  when: ruby_version is defined
+
+- name: copy deploy private key to VM
+  copy: src=../_apps/{{ app_name }}/keys/ssh/deploy_key dest=/home/{{ user_name }}/.ssh/{{ git_repo_from }}_deploy_key owner={{ user_name }} group={{ user_name }} mode=400
+  sudo: yes
+  when: git_repo_from is defined
+
+- name: copy deploy public key to VM
+  copy: src=../_apps/{{ app_name }}/keys/ssh/deploy_key.pub dest=/home/{{ user_name }}/.ssh/{{ git_repo_from }}_deploy_key.pub owner={{ user_name }} group={{ user_name }} mode=444
+  sudo: yes
+  when: git_repo_from is defined
+
+- name: copy ssh_config so that git_repo will be accessed using the injected private key
+  template: src=../group_files/ssh_config.j2 dest=/home/{{ user_name }}/.ssh/config owner={{ user_name }} group={{ user_name }} mode=600
+  sudo: yes
+  when: git_repo_from is defined

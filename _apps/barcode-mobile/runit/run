@@ -1,0 +1,13 @@
+#!/bin/sh
+
+export HOME=/home/{{ user_name }}
+export PATH=/opt/{{ ruby_version }}/bin:$HOME/.gem/{{ ruby_version }}/bin:/usr/local/bin:/usr/bin:/bin
+export LANG=en_US.UTF-8
+export GEM_HOME=$HOME/.gem/{{ ruby_version }}
+export GEM_PATH=$HOME/.gem/{{ ruby_version }}
+
+cd $HOME/apps/{{ app_name }}
+
+export RUN_ENV={{ app_env }}
+exec 2>&1
+exec chpst -u{{ user_name }} ./bin/start.sh
