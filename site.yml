@@ -1,12 +1,12 @@
----
 # Run site-node-initial with root user:
 #   ansible-playbook site-node-initial.yml --ask-pass
 # - include: site-node-initial.yml
 
-- include: site-node-common.yml
-- include: site-node-java.yml
-- include: site-node-kafka.yml
-- include: site-node-app.yml
+# - include: "site-node-common.yml"
+# - include: "site-node-java.yml"
+# - include: "site-node-kafka.yml"
+# - include: "site-node-app.yml"
+- include: "site-node-jetbrains.yml"
 
 
 # - name: "Setup node"

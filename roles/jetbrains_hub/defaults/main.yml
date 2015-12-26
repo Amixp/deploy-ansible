@@ -1,0 +1,12 @@
+---
+dist_version: "1.0.749"
+dist_filename: "hub-ring-bundle-{{ dist_version }}.zip"
+dist_url: "https://download.jetbrains.com/hub/1.0/{{ dist_filename }}"
+dist_sha256_url: "https://download.jetbrains.com/hub/1.0/{{ dist_filename }}.sha256"
+
+srv_home: "/opt/hub-ring"
+srv_port: 3000
+
+srv_user:
+  name: jetbrains_hub
+  shell: /bin/nologin

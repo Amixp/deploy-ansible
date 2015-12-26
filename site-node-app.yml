@@ -1,4 +1,3 @@
----
 - name: "Install jruby"
   hosts: app_nodes
   gather_facts: yes

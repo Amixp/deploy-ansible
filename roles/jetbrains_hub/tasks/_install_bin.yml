@@ -1,0 +1,42 @@
+---
+- name: Create user
+  user:
+    name: "{{ srv_user.name }}"
+    comment: "Deploy User - {{ srv_user.name }}"
+    shell: "{{ srv_user.shell }}"
+    createhome: no
+    home: "{{ srv_home }}"
+    system: yes
+  sudo: yes
+
+- name: Check if dist has been downloaded
+  command: test -f /tmp/{{ dist_filename }}
+  register: dist_downloaded
+  failed_when: dist_downloaded.rc not in [0, 1]
+  changed_when: False
+
+- name: Set download command
+  set_fact:
+    dwn_cmd: "curl -O -x {{ proxy_env.http_proxy }}"
+  when: proxy_env is defined
+
+- name: Set download command
+  set_fact:
+    dwn_cmd: "curl -O"
+  when: proxy_env is undefined
+
+- name: Download
+  shell: "{{ dwn_cmd }} {{ dist_url }} chdir=/tmp"
+  when: dist_downloaded.rc == 1
+
+- name: Download sha256
+  shell: "{{ dwn_cmd }} {{ dist_sha256_url }} chdir=/tmp"
+
+- name: Checksum
+  shell: "sha256sum -c {{ dist_filename }}.sha256 chdir=/tmp"
+  register: check_result
+  failed_when: "'FAILED' in check_result.stdout"
+
+- name: Extract
+  shell: "unzip /tmp/{{ dist_filename }} -d /opt/hub-ring-bundle-{{ dist_version }} && ln -sf /opt/hub-ring-bundle-{{ dist_version }} /opt/hub-ring && chown -R {{ srv_user.name }}:{{ srv_user.name }} {{ srv_home }}* && rm /tmp/{{ dist_filename }}* chdir=/tmp"
+  sudo: yes

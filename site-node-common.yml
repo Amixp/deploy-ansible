@@ -1,10 +1,8 @@
----
 - name: "Setup node"
   hosts: all
   gather_facts: yes
 
   roles:
-  - cntlm
   - apt_update
   - oh-my-zsh
   - common

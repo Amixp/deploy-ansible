@@ -1,0 +1,11 @@
+#!/bin/sh
+
+export HOME={{ app_home_dir }}
+export LANG=en_US.UTF-8
+export LC_CTYPE=en_US.UTF-8
+export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+export PATH=$HOME/bin:$JAVA_HOME/bin:$JAVA_HOME/db/bin:$JAVA_HOME/jre/bin:/usr/local/bin:/usr/bin:/bin
+
+cd $HOME
+exec 2>&1
+exec chpst -u{{ user_name }} $HOME/bin/hub.sh run

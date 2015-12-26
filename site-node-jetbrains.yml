@@ -1,0 +1,11 @@
+- name: "Install Jetbrains Hub"
+  hosts: git
+  gather_facts: yes
+  roles:
+  - { role: jetbrains_hub }
+
+# - name: "Install Jetbrains Upsource"
+#   hosts: git
+#   gather_facts: yes
+#   roles:
+#   - { role: jetbrains_upsource }
