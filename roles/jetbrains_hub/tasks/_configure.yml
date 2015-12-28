@@ -1,5 +1,5 @@
 ---
 - name: Config proxy
-  shell: "./bin/hub.sh configure --listen-port {{ srv_port }} --base-url http://{{ inventory_hostname }}:80 chdir={{ srv_home }}"
+  shell: "./bin/hub.sh configure --listen-port {{ srv_port }} --base-url {{ srv_url }} chdir={{ srv_home }}"
   become: yes
   become_user: "{{ srv_user.name }}"

@@ -1,5 +1,5 @@
 - name: "Install Jetbrains Hub"
-  hosts: git
+  hosts: hub
   gather_facts: yes
   roles:
   - { role: jetbrains_hub }

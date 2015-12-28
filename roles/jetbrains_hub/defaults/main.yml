@@ -6,6 +6,7 @@ dist_sha256_url: "https://download.jetbrains.com/hub/1.0/{{ dist_filename }}.sha
 
 srv_home: "/opt/hub-ring"
 srv_port: 3000
+srv_url: "http://{{ inventory_hostname }}:80"
 
 srv_user:
   name: jetbrains_hub
