@@ -1,14 +1,14 @@
-# - name: "Install Jetbrains Hub"
-#   hosts: hub
-#   gather_facts: yes
-#   roles:
-#   - { role: jetbrains_hub }
+- name: "Install Jetbrains Hub"
+  hosts: hub
+  gather_facts: yes
+  roles:
+  - { role: jetbrains_hub }
 
-# - name: "Install Gitolite"
-#   hosts: git
-#   gather_facts: yes
-#   roles:
-#   - { role: gitolite }
+- name: "Install Gitolite"
+  hosts: git
+  gather_facts: yes
+  roles:
+  - { role: gitolite }
 
 - name: "Install Jetbrains Upsource"
   hosts: upsource
