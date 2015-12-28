@@ -1,0 +1,32 @@
+---
+- name: Create user
+  user:
+    name: "{{ srv_user.name }}"
+    comment: "Deploy User - {{ srv_user.name }}"
+    shell: "{{ srv_user.shell }}"
+    createhome: no
+    home: "{{ srv_home }}"
+    system: yes
+  sudo: yes
+
+- name: Check if dist has been downloaded
+  command: test -f /tmp/{{ dist_filename }}
+  register: dist_downloaded
+  failed_when: dist_downloaded.rc not in [0, 1]
+  changed_when: False
+
+- name: Download
+  get_url: url={{ dist_url }} dest=/tmp validate_certs=no
+  when: dist_downloaded.rc == 1
+
+- name: Download sha256
+  get_url: url={{ dist_sha256_url }} dest=/tmp validate_certs=no
+
+- name: Checksum
+  shell: "sha256sum -c {{ dist_filename }}.sha256 chdir=/tmp"
+  register: check_result
+  failed_when: "'FAILED' in check_result.stdout"
+
+- name: Extract
+  shell: "unzip /tmp/{{ dist_filename }} -d /opt && chown -R {{ srv_user.name }}:{{ srv_user.name }} {{ srv_home }}* && rm /tmp/{{ dist_filename }}* chdir=/tmp"
+  sudo: yes

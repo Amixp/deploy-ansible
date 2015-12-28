@@ -1,0 +1,5 @@
+---
+# - include: _install_bin.yml
+# - include: _configure.yml
+- include: ../../../lib/run_app_with_runit.yml app_name=jetbrains_upsource app_home_dir={{ srv_home }} user_name={{ srv_user.name }}
+# - include: ../../../lib/run_app_with_nginx.yml app_name=jetbrains_upsource app_home_dir={{ srv_home }}

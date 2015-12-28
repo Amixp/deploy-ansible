@@ -1,0 +1,12 @@
+---
+- name: Copy admin pub key
+  copy:
+    src: "{{ admin_pub_key }}"
+    dest: "{{ srv_home }}/{{ admin_name }}.pub"
+  become: yes
+  become_user: "{{ srv_user.name }}"
+
+- name: Setup admin pub key
+  shell: "{{ srv_home }}/bin/gitolite setup -pk {{ srv_home }}/{{ admin_name }}.pub"
+  become: yes
+  become_user: "{{ srv_user.name }}"

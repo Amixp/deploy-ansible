@@ -1,0 +1,4 @@
+---
+- include: _add_user.yml
+- include: _install_bin.yml
+- include: _configure.yml

@@ -1,0 +1,13 @@
+---
+dist_version: "2.5.4995"
+dist_filename: "upsource-{{ dist_version }}.zip"
+dist_url: "https://download.jetbrains.com/upsource/{{ dist_filename }}"
+dist_sha256_url: "https://download.jetbrains.com/upsource/{{ dist_filename }}.sha256"
+
+srv_home: "/opt/Upsource"
+srv_port: 3100
+srv_url: "http://{{ inventory_hostname }}:80"
+
+srv_user:
+  name: jetbrains_upsource
+  shell: /bin/nologin

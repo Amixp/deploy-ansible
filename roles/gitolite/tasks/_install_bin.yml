@@ -1,0 +1,27 @@
+---
+- name: Git proxy_env
+  shell: "git config --global http.proxy {{ proxy_env.http_proxy }}"
+  become: yes
+  become_user: "{{ srv_user.name }}"
+  when: proxy_env is defined
+
+- name: Get the App code from git
+  git:
+    repo: "{{ dist_url }}"
+    dest: "{{ srv_home }}/gitolite"
+    depth: 1
+    force: yes
+    update: yes
+    accept_hostkey: yes
+  become: yes
+  become_user: "{{ srv_user.name }}"
+
+- name: Make bin dir
+  file: path={{ srv_home }}/bin state=directory
+  become: yes
+  become_user: "{{ srv_user.name }}"
+
+- name: Install
+  shell: "{{ srv_home }}/gitolite/install -ln {{ srv_home }}/bin"
+  become: yes
+  become_user: "{{ srv_user.name }}"

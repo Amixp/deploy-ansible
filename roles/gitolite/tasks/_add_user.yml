@@ -1,0 +1,21 @@
+---
+- name: Create user
+  user:
+    name: "{{ srv_user.name }}"
+    comment: "For Git repos"
+    shell: "{{ srv_user.shell }}"
+    createhome: no
+    home: "{{ srv_home }}"
+    system: yes
+  sudo: yes
+
+- name: Set password
+  shell: "echo {{ ssh_user.name }}:{{ ssh_user.name }} | chpasswd"
+
+- name: Create home dir
+  file: path={{ srv_home }} owner={{ srv_user.name }} group={{ srv_user.name }} mode=755 state=directory
+  sudo: yes
+
+- name: Copy zshrc
+  template: src=zshrc.j2 dest={{ srv_home }}/.zshrc mode=0644 owner={{ srv_user.name }} group={{ srv_user.name }}
+  sudo: yes

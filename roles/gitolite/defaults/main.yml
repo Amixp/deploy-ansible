@@ -1,0 +1,11 @@
+---
+dist_url: "https://github.com/sitaramc/gitolite.git"
+srv_home: "/opt/git"
+
+srv_user:
+  name: git
+  shell: /bin/zsh
+
+# ssh-keygen -t rsa -C "Access key for git" -f {{ admin_name }}
+admin_pub_key: "~/.ssh/tungusovmy.pub"
+admin_name: "tungusovmy"
