@@ -36,8 +36,3 @@
 - name: Link App
   shell: "ln -sf /etc/sv/{{ app_name }} /etc/service/"
   sudo: yes
-
-# - name: Restart App
-#   tags: update
-#   shell: "sv restart {{ app_name }}"
-#   sudo: yes

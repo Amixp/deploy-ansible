@@ -1,0 +1,6 @@
+---
+- name: "Install kafka src"
+  hosts: app_nodes
+  gather_facts: yes
+  roles:
+  - { role: kafka, tags: ["src_only"] }

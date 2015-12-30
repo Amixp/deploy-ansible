@@ -5,9 +5,10 @@
     /opt/{{ ruby_version }}/bin/{{ ruby_version }} -S gem install bundler
   become: yes
   become_user: "{{ user_name }}"
+  environment: proxy_env
 
 - name: Git proxy_env
-  shell: "git config --global http.proxy {{ proxy_env.http_proxy }}"
+  shell: "git config --global http.proxy {{ proxy_env.http_proxy }} && git config --global https.proxy {{ proxy_env.https_proxy }}"
   become: yes
   become_user: "{{ user_name }}"
   when: proxy_env is defined
@@ -15,7 +16,7 @@
 - name: Get the App code from git
   tags: update
   git:
-    repo: "{{ git_repo_name }}"
+    repo: "{{ git_repo_url }}"
     dest: "/home/{{ user_name }}/apps/{{ app_name }}"
     version: "{{ app_version }}"
     depth: 1
@@ -24,19 +25,19 @@
     accept_hostkey: yes
   become: yes
   become_user: "{{ user_name }}"
-  when: git_repo_name is defined
+  when: git_repo_url is defined
 
 - name: Make App Dir
   file: path=/home/{{ user_name }}/apps state=directory
   become: yes
   become_user: "{{ user_name }}"
-  when: not git_repo_name is defined
+  when: not git_repo_url is defined
 
 - name: Copy App code archive
   unarchive: src=../_apps/{{ user_name }}/src.tgz dest=/home/{{ user_name }}/apps
   become: yes
   become_user: "{{ user_name }}"
-  when: not git_repo_name is defined
+  when: not git_repo_url is defined
 
 - name: Install gems for App
   tags: update
@@ -46,6 +47,7 @@
     bundle install --without=development test
   become: yes
   become_user: "{{ user_name }}"
+  environment: proxy_env
 
 # - name: Copy keys for App
 #   copy: src=../_apps/{{ user_name }}/keys dest=/home/{{ user_name }}/apps/{{ app_name }}

@@ -24,10 +24,12 @@
 - name: Create ssh directories for deployment user
   file: path=/home/{{ user_name }}/.ssh owner={{ user_name }} group={{ user_name }} mode=700 state=directory
   sudo: yes
+  when: ssh_install is defined
 
-# - name: For ssh connect as deployment user
-#   copy: src=../_apps/{{ apps_dir }}/authorized_keys_{{ cloud_name }} dest=/home/{{ user_name }}/.ssh/authorized_keys owner={{ user_name }} group={{ user_name }} mode=400
-#   sudo: yes
+- name: For ssh connect as deployment user
+  copy: src=../_apps/{{ apps_dir }}/authorized_keys_{{ cloud_name }} dest=/home/{{ user_name }}/.ssh/authorized_keys owner={{ user_name }} group={{ user_name }} mode=400
+  sudo: yes
+  when: ssh_install is defined
 
 - name: Gems setup
   copy: src=../group_files/gemrc dest=/home/{{ user_name }}/.gemrc owner={{ user_name }} group={{ user_name }} mode=644
@@ -35,16 +37,16 @@
   when: ruby_version is defined
 
 - name: copy deploy private key to VM
-  copy: src=../_apps/{{ app_name }}/keys/ssh/deploy_key dest=/home/{{ user_name }}/.ssh/{{ git_repo_from }}_deploy_key owner={{ user_name }} group={{ user_name }} mode=400
+  copy: src=../_apps/{{ app_name }}/keys/ssh/deploy_key dest=/home/{{ user_name }}/.ssh/{{ git_repo_ssh }}_deploy_key owner={{ user_name }} group={{ user_name }} mode=400
   sudo: yes
-  when: git_repo_from is defined
+  when: git_repo_ssh is defined
 
 - name: copy deploy public key to VM
-  copy: src=../_apps/{{ app_name }}/keys/ssh/deploy_key.pub dest=/home/{{ user_name }}/.ssh/{{ git_repo_from }}_deploy_key.pub owner={{ user_name }} group={{ user_name }} mode=444
+  copy: src=../_apps/{{ app_name }}/keys/ssh/deploy_key.pub dest=/home/{{ user_name }}/.ssh/{{ git_repo_ssh }}_deploy_key.pub owner={{ user_name }} group={{ user_name }} mode=444
   sudo: yes
-  when: git_repo_from is defined
+  when: git_repo_ssh is defined
 
 - name: copy ssh_config so that git_repo will be accessed using the injected private key
   template: src=../group_files/ssh_config.j2 dest=/home/{{ user_name }}/.ssh/config owner={{ user_name }} group={{ user_name }} mode=600
   sudo: yes
-  when: git_repo_from is defined
+  when: git_repo_ssh is defined

@@ -1,13 +1,13 @@
-upstream websocket_server {
+upstream {{ app_name }}_server {
   server localhost:3000;
 }
 
 server {
     listen      80;
-    server_name bm01dsk2.dsk2.picompany.ru;
+    server_name {{ inventory_hostname }};
 
-    access_log /var/log/nginx/bm01dsk2-access.log;
-    error_log  /var/log/nginx/bm01dsk2-error.log;
+    access_log /var/log/nginx/{{ app_name }}-access.log;
+    error_log  /var/log/nginx/{{ app_name }}-error.log;
 
     root /usr/share/nginx/html;
 
@@ -41,7 +41,7 @@ server {
 
     location / {
         access_log off;
-        proxy_pass http://websocket_server;
+        proxy_pass http://{{ app_name }}_server;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
