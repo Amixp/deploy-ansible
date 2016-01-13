@@ -1,0 +1,9 @@
+- name: "Setup node"
+  hosts: docker
+  gather_facts: yes
+
+  roles:
+  - apt_update
+  - oh-my-zsh
+  - common
+  - docker

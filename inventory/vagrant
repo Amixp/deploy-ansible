@@ -1,5 +1,5 @@
 [vagrant_servers:children]
-kafka
+docker
 
-[kafka]
-10.211.55.4 hostname=kafka
+[docker]
+docker-builder

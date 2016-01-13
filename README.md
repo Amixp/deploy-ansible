@@ -26,13 +26,18 @@ sudo apt-key adv --keyserver-options http-proxy=http://localhost:3128/ --keyserv
 ansible-playbook site.yml -u root --ask-pass
 
 # #########
-# Vagrant
+# Config
 # #########
 export ANSIBLE_CONFIG=ansible-vagrant.cfg
 
-ansible-playbook config_node_vagrant.yml --extra-vars \
-  "graphite_host=stat.name.com graphite_path_prefix=name.service.version"
+## Config nodes
+<!-- ansible-playbook site-node-initial.yml -l barcode_1s --ask-pass -->
+ansible-playbook site.yml -l docker-builder
 
+
+<!-- ansible-playbook config_node_vagrant.yml --extra-vars \
+  "graphite_host=stat.name.com graphite_path_prefix=name.service.version"
+ -->
 
 # #########
 # Keys
