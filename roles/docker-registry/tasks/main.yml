@@ -1,0 +1,51 @@
+---
+# file: roles/docker-registry/tasks/main.yml
+
+- name: Install Prerequisites
+  tags: docker
+  apt:
+    name: apache2-utils
+    state: latest
+    install_recommends: yes
+  sudo: yes
+
+- name: Copy config Nginx
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/nginx/conf.d/{{ item }}"
+    owner: "root"
+    group: "root"
+    mode: 0644
+  sudo: yes
+  with_items:
+  - registry.conf
+  - registry.password
+
+- name: Make dir
+  file: path="/docker-registry/data" state=directory
+  sudo: yes
+
+- name: Copy config Compose
+  template:
+    src: "{{ item }}.j2"
+    dest: "/docker-registry/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  sudo: yes
+  with_items:
+  - docker-compose.yml
+
+- name: init script
+  template:
+    src: "init-docker-registry.conf.j2"
+    dest: "/etc/init/docker-registry.conf"
+    owner: root
+    group: root
+    mode: 0644
+  sudo: yes
+
+- name: start
+  service: name=docker-registry state=started enabled=yes
+  sudo: yes
+  notify: restart nginx

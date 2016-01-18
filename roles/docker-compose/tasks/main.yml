@@ -1,0 +1,14 @@
+---
+# file: roles/docker-compose/tasks/main.yml
+
+- name: pip
+  apt:
+    name: python-pip
+    state: latest
+    install_recommends: yes
+  sudo: yes
+
+- name: Docker Compose
+  shell: "pip install docker-compose"
+  sudo: yes
+  environment: proxy_env
