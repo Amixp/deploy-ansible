@@ -3,10 +3,12 @@
   gather_facts: yes
 
   roles:
-  - apt_update
-  - kernel_update
-  - common
-  - oh-my-zsh
-  - runit
-  - monit
-  - docker
+  # - apt_update
+  # - kernel_update
+  # - common
+  # - oh-my-zsh
+  # - runit
+  # - monit
+  # - docker
+  # - docker-compose
+  # - docker-registry

@@ -37,6 +37,17 @@
     name: docker
     enabled: yes
 
+- name: Copy conf file
+  template:
+    src: docker.j2
+    dest: /etc/default/docker
+    mode: 0644
+    owner: root
+    group: root
+  when: proxy_env is defined
+  notify: restart docker
+  sudo: yes
+
 - name: Enable IP Forwarding for Containers
   copy:
     src: 70-docker-ip-forwarding.conf
