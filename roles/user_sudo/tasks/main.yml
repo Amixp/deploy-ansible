@@ -9,7 +9,7 @@
 - name: Append user into groups (Ubuntu 14.04)
   user:
     name: "{{ ssh_user.name }}"
-    groups: "adm,cdrom,sudo,dip,plugdev,libvirtd,lpadmin,sambashare"
+    groups: "adm,cdrom,sudo,dip,plugdev,lpadmin,sambashare"
     append: yes
   when: ansible_lsb.codename == 'trusty'
 

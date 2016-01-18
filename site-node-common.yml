@@ -4,7 +4,9 @@
 
   roles:
   - apt_update
-  - oh-my-zsh
+  - kernel_update
   - common
+  - oh-my-zsh
   - runit
   - monit
+  - docker
