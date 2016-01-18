@@ -1,0 +1,8 @@
+---
+# file: roles/kernel_update/tasks/main.yml
+
+- name: Upgrade Kernel
+  apt: package={{ item }} state=latest install_recommends=yes
+  sudo: yes
+  with_items:
+    - linux-generic-lts-vivid
