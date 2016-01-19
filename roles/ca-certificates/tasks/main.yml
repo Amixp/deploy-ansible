@@ -1,0 +1,17 @@
+---
+# file: roles/ca-certificates/tasks/main.yml
+
+- name: Copy CA cert
+  copy:
+    src: "keys/{{ item }}"
+    dest: "/usr/local/share/ca-certificates/{{ item }}"
+    owner: "root"
+    group: "root"
+    mode: 0640
+  sudo: yes
+  with_items:
+  - ica01pikCA.crt
+
+- name: Update ca-certificates
+  shell: "update-ca-certificates"
+  sudo: yes

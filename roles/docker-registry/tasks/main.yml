@@ -21,6 +21,18 @@
   - registry.conf
   - registry.password
 
+- name: Copy ssl
+  copy:
+    src: "keys/{{ item }}"
+    dest: "/etc/nginx/ssl/{{ item }}"
+    owner: "root"
+    group: "root"
+    mode: 0640
+  sudo: yes
+  with_items:
+  - docker-registry.crt
+  - docker-registry.key
+
 - name: Make dir
   file: path="/docker-registry/data" state=directory
   sudo: yes
