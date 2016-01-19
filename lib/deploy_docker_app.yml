@@ -1,0 +1,94 @@
+---
+- name: login to private Docker remote registry
+  docker_login:
+    registry: docker-registry.dsk2.picompany.ru
+    username: deployuser
+    password: deployuser
+    reauth: yes
+
+- name: Create user
+  user:
+    name: "{{ app_name }}"
+    comment: "Deploy User - {{ app_name }}"
+    shell: /bin/false
+    skeleton: no
+  become: yes
+
+- name: Get user id
+  stat: path=/home/{{ app_name }}
+  register: deploy_user
+
+- name: Create dirs
+  file:
+    path: "/home/{{ app_name }}/{{ item }}"
+    state: directory
+    owner: "{{ app_name }}"
+    group: "{{ app_name }}"
+  with_items:
+  - "data"
+  - "logs"
+  become: yes
+  become_user: "{{ app_name }}"
+
+# docker-compose
+
+# /etc/init/app_{{ app_name }}
+
+# start docker-compose
+
+
+
+# - name: Install bundler
+#   shell: >
+#     executable=/bin/zsh source /home/{{ user_name }}/.zshrc;
+#     /opt/{{ ruby_version }}/bin/{{ ruby_version }} -S gem install bundler
+#   become: yes
+#   become_user: "{{ user_name }}"
+#   environment: proxy_env
+
+# - name: Git proxy_env
+#   shell: "git config --global http.proxy {{ proxy_env.http_proxy }} && git config --global https.proxy {{ proxy_env.https_proxy }}"
+#   become: yes
+#   become_user: "{{ user_name }}"
+#   when: proxy_env is defined
+
+# - name: Get the App code from git
+#   tags: update
+#   git:
+#     repo: "{{ git_repo_url }}"
+#     dest: "/home/{{ user_name }}/apps/{{ app_name }}"
+#     version: "{{ app_version }}"
+#     depth: 1
+#     force: yes
+#     update: yes
+#     accept_hostkey: yes
+#   become: yes
+#   become_user: "{{ user_name }}"
+#   when: git_repo_url is defined
+
+# - name: Make App Dir
+#   file: path=/home/{{ user_name }}/apps state=directory
+#   become: yes
+#   become_user: "{{ user_name }}"
+#   when: not git_repo_url is defined
+
+# - name: Copy App code archive
+#   unarchive: src=../_apps/{{ user_name }}/src.tgz dest=/home/{{ user_name }}/apps
+#   become: yes
+#   become_user: "{{ user_name }}"
+#   when: not git_repo_url is defined
+
+# - name: Install gems for App
+#   tags: update
+#   shell: >
+#     executable=/bin/zsh source /home/{{ user_name }}/.zshrc;
+#     cd /home/{{ user_name }}/apps/{{ app_name }};
+#     bundle install --without=development test
+#   become: yes
+#   become_user: "{{ user_name }}"
+#   environment: proxy_env
+
+# # - name: Copy keys for App
+# #   copy: src=../_apps/{{ user_name }}/keys dest=/home/{{ user_name }}/apps/{{ app_name }}
+# #   become: yes
+# #   become_user: "{{ user_name }}"

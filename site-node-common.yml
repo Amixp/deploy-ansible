@@ -6,10 +6,7 @@
   # - apt_update
   # - kernel_update
   # - common
-  # - { role: ca-certificates, when: updateCA }
+  - { role: ca-certificates, when: updateCA }
   # - oh-my-zsh
   # - runit
   # - monit
-  # - docker
-  # - docker-compose
-  # - docker-registry

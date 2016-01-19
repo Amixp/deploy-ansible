@@ -1,14 +1,14 @@
 ---
-# file: roles/docker-compose/tasks/main.yml
+# file: roles/docker/tasks/docker-py.yml
 
-- name: pip
+- name: Install pip
   apt:
     name: python-pip
     state: latest
     install_recommends: yes
   become: yes
 
-- name: Docker Compose
-  shell: "pip install docker-compose"
+- name: Install Docker-Py
+  shell: "pip install docker-py"
   become: yes
   environment: "{{ proxy_env }}"

@@ -1,7 +1,8 @@
 - name: "Setup node"
-  hosts: all
+  hosts: docker-registry
   gather_facts: yes
 
   roles:
   - docker
   - docker-compose
+  - docker-registry

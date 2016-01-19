@@ -6,5 +6,5 @@
     name: '{{ ssh_user.name }}'
     groups: docker
     append: yes
-  sudo: yes
+  become: yes
   when: ssh_user is defined

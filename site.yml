@@ -6,7 +6,7 @@
 # - include: "site-node-java.yml"
 # - include: "site-node-kafka.yml"
 # - include: "site-node-app.yml"
-- include: "site-node-jetbrains.yml"
+# - include: "site-node-jetbrains.yml"
 
 
 # - name: "Setup node"
