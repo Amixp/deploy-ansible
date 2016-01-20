@@ -1,0 +1,15 @@
+{{ app_name }}:
+  image: "{{ docker_image }}"
+  ports:
+    - "2181:2181"
+    - "2888:2888"
+    - "3888:3888"
+  environment:
+    SERVER_JVMFLAGS: "-Xms1g -Xmx2g"
+{% if zoo_cluster %}
+    ZOO_ID: {{ hostvars[inventory_hostname].zoo_id }}
+    ZOO_SERVERS: "{% for host in groups['zookeeper_nodes'] %}{{ host }}:2888:3888{% if not loop.last %},{% endif %}{% endfor %}"
+{% endif %}
+  volumes:
+    - "{{ deploy_user.stat.path }}/data:/var/opt/zookeeper"
+    - "{{ deploy_user.stat.path }}/config:/opt/zookeeper/conf"

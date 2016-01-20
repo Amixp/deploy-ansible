@@ -2,8 +2,8 @@
 - name: login to private Docker remote registry
   docker_login:
     registry: docker-registry.dsk2.picompany.ru
-    username: deployuser
-    password: deployuser
+    username: "{{ registry_user.name }}"
+    password: "{{ registry_user.pass }}"
     reauth: yes
 
 - name: Create user
@@ -18,21 +18,41 @@
   stat: path=/home/{{ app_name }}
   register: deploy_user
 
-- name: Create dirs
-  file:
-    path: "/home/{{ app_name }}/{{ item }}"
-    state: directory
-    owner: "{{ app_name }}"
-    group: "{{ app_name }}"
-  with_items:
-  - "data"
-  - "logs"
+# - name: Print Debug
+#   debug: msg={{ deploy_user.stat.path }}
+
+# - name: Create dirs
+#   file:
+#     path: "{{ deploy_user.stat.path }}/{{ item }}"
+#     state: directory
+#     owner: "{{ app_name }}"
+#     group: "{{ app_name }}"
+#   with_items:
+#   - "data"
+#   - "logs"
+#   - "config"
+#   become: yes
+#   become_user: "{{ app_name }}"
+
+# - name: Get Docker Image
+#   docker:
+#     image: "{{ docker_image }}"
+#     state: present
+
+- name: Docker Compose File
+  template:
+    src: "../_apps/{{ app_name }}-in-docker/docker-compose.yml.j2"
+    dest: "{{ deploy_user.stat.path }}/docker-compose.yml"
   become: yes
   become_user: "{{ app_name }}"
 
-# docker-compose
+- name: Upstart file
+  template:
+    src: ../_apps/{{ app_name }}-in-docker/upstart.conf.j2
+    dest: "{{ deploy_user.stat.path }}/app-{{ app_name }}.conf"
+    # dest: "/etc/init/app-{{ app_name }}.conf"
+  become: yes
 
-# /etc/init/app_{{ app_name }}
 
 # start docker-compose
 
