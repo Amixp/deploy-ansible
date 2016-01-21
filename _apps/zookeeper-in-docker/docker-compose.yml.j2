@@ -1,5 +1,6 @@
 {{ app_name }}:
   image: "{{ docker_image }}"
+  user: "{{ deploy_user.stat.uid }}:{{ deploy_user.stat.gid }}"
   ports:
     - "2181:2181"
     - "2888:2888"

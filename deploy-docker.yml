@@ -9,11 +9,6 @@
 #   - include: lib/run_app_with_monit.yml
 #   - include: lib/run_app_with_nginx.yml
 
-#   - name: Restart App
-#     tags: update
-#     shell: "sv restart {{ app_name }}"
-#     sudo: yes
-
 - name: "Deploy Docker App"
   hosts: all
   gather_facts: yes
