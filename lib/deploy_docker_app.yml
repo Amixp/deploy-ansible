@@ -30,11 +30,6 @@
   become: yes
   become_user: "{{ app_name }}"
 
-- name: Get Docker Image
-  docker:
-    image: "{{ docker_image }}"
-    state: present
-
 - name: Docker Compose File
   template:
     src: "../_apps/{{ app_name }}-in-docker/docker-compose.yml.j2"
@@ -47,6 +42,9 @@
     src: ../_apps/{{ app_name }}-in-docker/upstart.conf.j2
     dest: "/etc/init/app-{{ app_name }}.conf"
   become: yes
+
+- name: Get Docker Image
+  shell: "docker pull {{ docker_image }}"
 
 # - name: Start service
 #   service:
