@@ -30,7 +30,36 @@ ansible-playbook site.yml -u root --ask-pass
 # #########
 export ANSIBLE_CONFIG=ansible-vagrant.cfg
 
+# Disable services
+ansible MyNodes -a "service webmin stop" --sudo
+ansible MyNodes -a "update-rc.d webmin disable" --sudo
+
+## Dev Server
+
+### Zookeeper
+ansible-playbook deploy-docker.yml -l dev -vv --extra-vars \
+  "app_name=zookeeper srv_name=zookeeper \
+  docker_image=docker-registry.dsk2.picompany.ru/zookeeper:3.4.6"
+
+### Kafka
+ansible-playbook deploy-docker.yml -l dev -vv --extra-vars \
+  "app_name=kafka srv_name=kafka \
+  docker_image=docker-registry.dsk2.picompany.ru/kafka:0.9.0.0"
+
+### Redis
+
+#### barcode-mobile
+ansible-playbook deploy-docker.yml -l dev -vv --extra-vars \
+  "app_name=redis srv_name=redis-barcode-mobile \
+  docker_image=docker-registry.dsk2.picompany.ru/redis:3.0.6"
+
 ## Config nodes
+ansible-playbook site-node-initial.yml -l kafka-nodes --ask-pass
+ansible-playbook site.yml
+
+ansible-playbook site-node-initial.yml -l barcode_1s --ask-pass
+ansible-playbook site.yml -l barcode_1s
+
 <!-- ansible-playbook site-node-initial.yml -l barcode_1s --ask-pass -->
 ansible-playbook site.yml -l docker-builder
 
@@ -38,6 +67,7 @@ ansible-playbook site.yml -l docker-builder
 <!-- ansible-playbook config_node_vagrant.yml --extra-vars \
   "graphite_host=stat.name.com graphite_path_prefix=name.service.version"
  -->
+
 
 # #########
 # Keys
