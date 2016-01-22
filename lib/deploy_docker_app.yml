@@ -8,39 +8,39 @@
 
 - name: Create user
   user:
-    name: "{{ app_name }}"
-    comment: "Deploy User - {{ app_name }}"
+    name: "{{ srv_name }}"
+    comment: "Deploy User - {{ srv_name }}"
     shell: /bin/false
     skeleton: no
   become: yes
 
 - name: Get user id
-  stat: path=/home/{{ app_name }}
+  stat: path=/home/{{ srv_name }}
   register: deploy_user
 
 - name: Create dirs
   file:
     path: "{{ deploy_user.stat.path }}/{{ item }}"
     state: directory
-    owner: "{{ app_name }}"
-    group: "{{ app_name }}"
+    owner: "{{ srv_name }}"
+    group: "{{ srv_name }}"
   with_items:
   - "data"
   - "config"
   become: yes
-  become_user: "{{ app_name }}"
+  become_user: "{{ srv_name }}"
 
 - name: Docker Compose File
   template:
     src: "../_apps/{{ app_name }}-in-docker/docker-compose.yml.j2"
     dest: "{{ deploy_user.stat.path }}/docker-compose.yml"
   become: yes
-  become_user: "{{ app_name }}"
+  become_user: "{{ srv_name }}"
 
 - name: Upstart file
   template:
     src: ../_apps/{{ app_name }}-in-docker/upstart.conf.j2
-    dest: "/etc/init/app-{{ app_name }}.conf"
+    dest: "/etc/init/app-{{ srv_name }}.conf"
   become: yes
 
 - name: Get Docker Image
@@ -48,6 +48,6 @@
 
 # - name: Start service
 #   service:
-#     name: "app-{{ app_name }}"
+#     name: "app-{{ srv_name }}"
 #     state: started
 #   become: yes

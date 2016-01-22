@@ -1,4 +1,4 @@
-description "{{ app_name }} in Docker Container"
+description "{{ srv_name }} in Docker Container"
 
 start on filesystem and started docker
 stop on runlevel [!2345]
@@ -23,11 +23,11 @@ script
         done
     }
 
-    sleepWhileAppIsUp "{{ app_name }}_"
+    sleepWhileAppIsUp "{{ srv_name }}_"
 end script
 
 post-stop script
-    if docker ps | grep {{ app_name }}_;
+    if docker ps | grep {{ srv_name }}_;
     then
         /usr/local/bin/docker-compose -f {{ deploy_user.stat.path }}/docker-compose.yml stop
     fi
