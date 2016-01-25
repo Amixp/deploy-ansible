@@ -3,10 +3,10 @@
   gather_facts: yes
 
   roles:
-  # - apt_update
-  # - kernel_update
-  # - common
+  - apt_update
+  - kernel_update
+  - common
   - { role: ca-certificates, when: updateCA }
-  # - oh-my-zsh
-  # - runit
+  - oh-my-zsh
+  - runit
   # - monit

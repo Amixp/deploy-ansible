@@ -1,6 +1,6 @@
 ---
 # file: roles/docker/tasks/main.yml
 
-- include: install.yml
-- include: optional.yml
-- include: docker-py.yml
+- include: _install.yml
+- include: _optional.yml
+- include: _docker-py.yml

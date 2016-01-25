@@ -9,9 +9,9 @@
 - name: Update apt cache
   apt: update_cache=yes force=yes
   sudo: yes
-  environment: proxy_env
+  environment: "{{ proxy_env }}"
 
 - name: Upgrade apt
   apt: upgrade=yes force=yes
   sudo: yes
-  environment: proxy_env
+  environment: "{{ proxy_env }}"

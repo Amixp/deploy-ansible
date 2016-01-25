@@ -5,13 +5,13 @@
 #   tags: xwiki
 #   apt_key: url=http://maven.xwiki.org/public.gpg state=present
 #   sudo: yes
-#   environment: proxy_env
+#   environment: "{{ proxy_env }}"
 
 # - name: Add xwiki Repo
 #   tags: xwiki
 #   apt_repository: repo='deb http://maven.xwiki.org stable/' state=present update_cache=yes
 #   sudo: yes
-#   environment: proxy_env
+#   environment: "{{ proxy_env }}"
 
 # - name: Install xwiki
 #   tags: xwiki

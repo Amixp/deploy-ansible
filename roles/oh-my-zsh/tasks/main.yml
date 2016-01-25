@@ -24,7 +24,7 @@
     dest: "~/.oh-my-zsh"
     version: master
     depth: 1
-  environment: proxy_env
+  environment: "{{ proxy_env }}"
   become: yes
   become_user: "{{ ssh_user.name }}"
 

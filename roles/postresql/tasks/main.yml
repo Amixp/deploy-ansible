@@ -13,13 +13,13 @@
   tags: postgresql
   apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc state=present
   sudo: yes
-  environment: proxy_env
+  environment: "{{ proxy_env }}"
 
 - name: Add Postgresql Repo
   tags: postgresql
   apt_repository: repo='deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' state=present update_cache=yes
   sudo: yes
-  environment: proxy_env
+  environment: "{{ proxy_env }}"
 
 - name: Install Postgresql
   tags: postgresql

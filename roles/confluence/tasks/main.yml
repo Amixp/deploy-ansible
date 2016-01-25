@@ -3,7 +3,7 @@
 
 # - name: Download confluence
 #   get_url: "url={{ confluence_url }} dest=/tmp/apache-confluence-{{ confluence_version }}.tar.gz sha256sum={{ confluence_sha256 }}"
-# environment: proxy_env
+# environment: "{{ proxy_env }}"
 
 - name: Extract confluence
   shell: "tar -xzf /tmp/atlassian-confluence-5.7.tar.gz chdir=/tmp"

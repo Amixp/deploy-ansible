@@ -1,0 +1,8 @@
+- name: "Setup node"
+  hosts: consul_nodes
+  gather_facts: yes
+
+  roles:
+  - consul
+  - consul-template
+  - consul-registrator

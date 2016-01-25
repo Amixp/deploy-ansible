@@ -5,7 +5,7 @@
     /opt/{{ ruby_version }}/bin/{{ ruby_version }} -S gem install bundler
   become: yes
   become_user: "{{ user_name }}"
-  environment: proxy_env
+  environment: "{{ proxy_env }}"
 
 - name: Git proxy_env
   shell: "git config --global http.proxy {{ proxy_env.http_proxy }} && git config --global https.proxy {{ proxy_env.https_proxy }}"
@@ -47,7 +47,7 @@
     bundle install --without=development test
   become: yes
   become_user: "{{ user_name }}"
-  environment: proxy_env
+  environment: "{{ proxy_env }}"
 
 # - name: Copy keys for App
 #   copy: src=../_apps/{{ user_name }}/keys dest=/home/{{ user_name }}/apps/{{ app_name }}

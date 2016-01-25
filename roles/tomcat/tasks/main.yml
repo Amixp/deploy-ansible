@@ -3,7 +3,7 @@
 
 - name: Download tomcat
   get_url: "url={{ tomcat_url }} dest=/tmp/apache-tomcat-{{ tomcat_version }}.tar.gz sha256sum={{ tomcat_sha256 }}"
-environment: proxy_env
+environment: "{{ proxy_env }}"
 
 - name: Extract tomcat
   shell: "tar -xzf /tmp/apache-tomcat-{{ tomcat_version }}.tar.gz chdir=/tmp"

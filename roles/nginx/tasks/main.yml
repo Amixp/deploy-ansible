@@ -10,19 +10,19 @@
   tags: nginx
   apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
   sudo: yes
-  environment: proxy_env
+  environment: "{{ proxy_env }}"
 
 - name: Add Nginx Repo
   tags: nginx
   apt_repository: repo='deb http://nginx.org/packages/ubuntu/ precise nginx' state=present update_cache=yes
   sudo: yes
-  environment: proxy_env
+  environment: "{{ proxy_env }}"
 
 - name: Add Nginx Src Repo
   tags: nginx
   apt_repository: repo='deb-src http://nginx.org/packages/ubuntu/ precise nginx' state=present update_cache=yes
   sudo: yes
-  environment: proxy_env
+  environment: "{{ proxy_env }}"
 
 - name: Install some packages
   apt: package={{ item }} state=latest install_recommends=yes

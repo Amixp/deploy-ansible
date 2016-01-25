@@ -4,4 +4,4 @@
 
 - name: Download App jar
   get_url: "url={{ jar_url }} dest=/home/{{ deploy_user_name }}/apps/{{ app_name }}/{{ jar_name }}"
-  environment: proxy_env
+  environment: "{{ proxy_env }}"
