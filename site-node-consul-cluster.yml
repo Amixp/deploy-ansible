@@ -1,0 +1,10 @@
+---
+- name: "Setup consul cluster"
+  hosts: consul_nodes
+  gather_facts: yes
+  tasks:
+  - include: lib/deploy_docker_app.yml
+
+  - name: Join Nodes
+    shell: ""
+    when: ""
