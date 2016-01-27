@@ -1,0 +1,6 @@
+{{ srv_name }}:
+  image: "{{ docker_image }}"
+  net: "host"
+  volumes:
+    - "/var/run/docker.sock:/tmp/docker.sock"
+  command: "consul://localhost:8500"

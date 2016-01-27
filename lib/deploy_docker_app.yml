@@ -43,6 +43,11 @@
     dest: "/etc/init/app-{{ srv_name }}.conf"
   become: yes
 
+- name: Remove Docker Image
+  docker_image:
+    name: "{{ docker_image }}"
+    state: absent
+
 - name: Get Docker Image
   shell: "docker pull {{ docker_image }}"
 
