@@ -3,8 +3,35 @@
   hosts: consul_nodes
   gather_facts: yes
   tasks:
-  - include: lib/deploy_docker_app.yml
+  - include: lib/deploy_docker_app.yml app_name=consul-server srv_name=consul-server docker_image=docker-registry.dsk2.picompany.ru/consul:0.6.3
 
-  - name: Join Nodes
-    shell: ""
-    when: ""
+- name: "Start Web UI"
+  hosts: consul_nodes
+  vars:
+    app_name: "consul-web-ui"
+  roles:
+    - { role: nginx, when: consul_web_ui is defined }
+  tasks:
+    - include: lib/run_app_with_nginx.yml
+      when: consul_web_ui is defined
+
+    - name: Install Prerequisites
+      apt:
+        name: "{{ item }}"
+        state: latest
+        install_recommends: yes
+      become: yes
+      with_items:
+        - "python-passlib"
+      when: consul_web_ui is defined
+
+    - name: Basic Auth
+      htpasswd:
+        path: "/etc/nginx/conf.d/{{ app_name }}.password"
+        name: "{{ consul.web_ui.user }}"
+        password: "{{ consul.web_ui.pass }}"
+        owner: "root"
+        group: "root"
+        mode: 0644
+      become: yes
+      when: consul_web_ui is defined

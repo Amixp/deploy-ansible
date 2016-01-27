@@ -6,6 +6,9 @@ server {
   listen 443;
   server_name {{ inventory_hostname }};
 
+  access_log /var/log/nginx/docker-registry-access.log;
+  error_log  /var/log/nginx/docker-registry-error.log;
+
   # SSL
   ssl on;
   ssl_certificate /etc/nginx/ssl/docker-registry.crt;

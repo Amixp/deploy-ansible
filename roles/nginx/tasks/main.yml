@@ -4,29 +4,29 @@
 - name: Deinstall nginx
   tags: nginx
   apt: package=nginx-common state=absent purge=yes
-  sudo: yes
+  become: yes
 
 - name: Add Key for Nginx Repo
   tags: nginx
   apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
-  sudo: yes
+  become: yes
   environment: "{{ proxy_env }}"
 
 - name: Add Nginx Repo
   tags: nginx
   apt_repository: repo='deb http://nginx.org/packages/ubuntu/ precise nginx' state=present update_cache=yes
-  sudo: yes
+  become: yes
   environment: "{{ proxy_env }}"
 
 - name: Add Nginx Src Repo
   tags: nginx
   apt_repository: repo='deb-src http://nginx.org/packages/ubuntu/ precise nginx' state=present update_cache=yes
-  sudo: yes
+  become: yes
   environment: "{{ proxy_env }}"
 
 - name: Install some packages
   apt: package={{ item }} state=latest install_recommends=yes
-  sudo: yes
+  become: yes
   with_items:
     - build-essential
     - libssl-dev
@@ -35,22 +35,22 @@
 - name: Install nginx
   tags: nginx
   action: apt pkg=nginx state=latest force=yes install_recommends=yes
-  sudo: yes
+  become: yes
 
 - name: Clear conf.d dir
   tags: nginx
   shell: "rm -f /etc/nginx/conf.d/*"
-  sudo: yes
+  become: yes
   notify: restart nginx
 
-- name: Conf for HttpStubStatusModule
-  tags: nginx
-  copy: src=status.conf dest=/etc/nginx/conf.d/status.conf mode=0644 owner=root group=root
-  sudo: yes
-  notify: restart nginx
-  when: stub_status is defined
+# - name: Conf for HttpStubStatusModule
+#   tags: nginx
+#   copy: src=status.conf dest=/etc/nginx/conf.d/status.conf mode=0644 owner=root group=root
+#   become: yes
+#   notify: restart nginx
+#   when: stub_status is defined
 
-- name: Config for monit
-  copy: src=monit dest=/etc/monit/conf.d/nginx mode=0600 owner=root group=root
-  sudo: yes
-  notify: restart monit
+# - name: Config for monit
+#   copy: src=monit dest=/etc/monit/conf.d/nginx mode=0600 owner=root group=root
+#   become: yes
+#   notify: restart monit

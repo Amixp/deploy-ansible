@@ -8,10 +8,10 @@
     owner: "root"
     group: "root"
     mode: 0640
-  sudo: yes
+  become: yes
   with_items:
   - ica01pikCA.crt
 
 - name: Update ca-certificates
   shell: "update-ca-certificates"
-  sudo: yes
+  become: yes
