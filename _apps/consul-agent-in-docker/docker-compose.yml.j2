@@ -15,8 +15,9 @@
   environment:
     DATACENTER: "{{ consul.dc }}"
     EXTERNAL_IP: "{{ ansible_default_ipv4.address }}"
+    CLIENT_ADDR: "0.0.0.0"
     TOKEN: "{{ consul.token }}"
   volumes:
-    - "{{ deploy_user.stat.path }}/data:/var/opt/consul"
-    - "{{ deploy_user.stat.path }}/config:/opt/consul/config"
-  command: "consul agent -config-dir /opt/consul/config{% if dont_join is undefined %} -join {{ consul.first_node_ip }}{% endif %}"
+    - "{{ deploy_user.stat.path }}/data:/var/consul"
+    - "{{ deploy_user.stat.path }}/config:/etc/consul"
+  command: "consul agent -config-dir /etc/consul{% if dont_join is undefined %} -join {{ consul.first_node_ip }}{% endif %}"

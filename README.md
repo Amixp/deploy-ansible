@@ -30,6 +30,10 @@ ansible-playbook site.yml -u root --ask-pass
 # #########
 export ANSIBLE_CONFIG=ansible-vagrant.cfg
 
+## Consul
+ansible-playbook site-node-consul-agents.yml -l docker-builder --tags "install_app" -vv
+
+
 # Disable services
 ansible MyNodes -a "service webmin stop" --sudo
 ansible MyNodes -a "update-rc.d webmin disable" --sudo
