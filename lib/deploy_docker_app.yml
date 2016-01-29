@@ -1,10 +1,46 @@
 ---
+- name: Stop service
+  service:
+    name: "app-{{ srv_name }}"
+    state: stopped
+  become: yes
+  ignore_errors: yes
+  tags:
+  - "remove_app"
+  - "remove_user"
+  - "remove_image"
+  - "install_app"
+
+- name: Remove User
+  user:
+    name: "{{ srv_name }}"
+    state: absent
+    remove: yes
+  become: yes
+  tags:
+  - "remove_user"
+
+- name: Remove Upstart file
+  file:
+    path: "/etc/init/app-{{ srv_name }}.conf"
+    state: absent
+  become: yes
+  tags:
+  - "remove_app"
+
+- name: Remove Docker Image
+  shell: "docker rmi {{ docker_image }}"
+  tags:
+  - "remove_image"
+
 - name: Login to private Docker remote registry
   docker_login:
     registry: docker-registry.dsk2.picompany.ru
     username: "{{ docker_registry_user.name }}"
     password: "{{ docker_registry_user.pass }}"
     reauth: yes
+  tags:
+  - "install_app"
 
 - name: Create user
   user:
@@ -13,10 +49,14 @@
     shell: /bin/false
     skeleton: no
   become: yes
+  tags:
+  - "install_app"
 
 - name: Get user id
   stat: path=/home/{{ srv_name }}
   register: deploy_user
+  tags:
+  - "install_app"
 
 - name: Create dirs
   file:
@@ -29,6 +69,8 @@
   - "config"
   become: yes
   become_user: "{{ srv_name }}"
+  tags:
+  - "install_app"
 
 - name: Docker Compose File
   template:
@@ -36,23 +78,26 @@
     dest: "{{ deploy_user.stat.path }}/docker-compose.yml"
   become: yes
   become_user: "{{ srv_name }}"
+  tags:
+  - "install_app"
 
 - name: Upstart file
   template:
     src: ../_apps/{{ app_name }}-in-docker/upstart.conf.j2
     dest: "/etc/init/app-{{ srv_name }}.conf"
   become: yes
-
-- name: Remove Docker Image
-  docker_image:
-    name: "{{ docker_image }}"
-    state: absent
+  tags:
+  - "install_app"
 
 - name: Get Docker Image
   shell: "docker pull {{ docker_image }}"
+  tags:
+  - "install_app"
 
-# - name: Start service
-#   service:
-#     name: "app-{{ srv_name }}"
-#     state: started
-#   become: yes
+- name: Start service
+  service:
+    name: "app-{{ srv_name }}"
+    state: started
+  become: yes
+  tags:
+  - "install_app"

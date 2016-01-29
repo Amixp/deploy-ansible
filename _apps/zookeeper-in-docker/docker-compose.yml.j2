@@ -6,6 +6,7 @@
     - "2888:2888"
     - "3888:3888"
   environment:
+    SERVICE_TAGS: "{{ run_env }}"
     SERVER_JVMFLAGS: "-Xms1g -Xmx2g"
 {% if zoo_cluster %}
     ZOO_ID: {{ hostvars[inventory_hostname].zoo_id }}

@@ -3,3 +3,6 @@
   user: "{{ deploy_user.stat.uid }}:{{ deploy_user.stat.gid }}"
   ports:
     - "6379"
+  environment:
+    SERVICE_TAGS: "{{ run_env }}"
+    SERVICE_NAME: "{{ srv_name }}"

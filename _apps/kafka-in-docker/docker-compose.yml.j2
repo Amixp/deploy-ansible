@@ -4,13 +4,13 @@
   ports:
     - "9092:9092"
   environment:
+    SERVICE_TAGS: "{{ run_env }}"
     ADVERTISED_HOST: {{ ansible_default_ipv4.address }}
     BROKER_ID: {{ hostvars[inventory_hostname].broker_id }}
+    NUM_PARTITIONS: {{ kafka_num_partitions }}
 {% if zoo_cluster %}
-    NUM_PARTITIONS: {{ groups['zookeeper_nodes']|length}}
     ZOO_CONNECT: "{% for host in groups['zookeeper_nodes'] %}{{ host }}:2181{% if not loop.last %},{% endif %}{% endfor %}"
 {% else %}
-    NUM_PARTITIONS: 1
     ZOO_CONNECT: {{ ansible_default_ipv4.address }}:2181
 {% endif %}
   volumes:

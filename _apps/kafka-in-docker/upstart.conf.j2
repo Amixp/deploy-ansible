@@ -30,5 +30,6 @@ post-stop script
     if docker ps | grep {{ srv_name }}_;
     then
         /usr/local/bin/docker-compose -f {{ deploy_user.stat.path }}/docker-compose.yml stop
+        /usr/local/bin/docker-compose -f {{ deploy_user.stat.path }}/docker-compose.yml rm -f
     fi
 end script

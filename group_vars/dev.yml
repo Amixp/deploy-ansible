@@ -1,2 +1,4 @@
 ---
 zoo_cluster: false
+kafka_num_partitions: 1
+run_env: "development"
