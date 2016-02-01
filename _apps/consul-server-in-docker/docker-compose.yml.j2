@@ -19,6 +19,6 @@
     TOKEN: "{{ consul.token }}"
     UI_ENABLE: "True"
   volumes:
-    - "{{ deploy_user.stat.path }}/data:/var/opt/consul"
-    - "{{ deploy_user.stat.path }}/config:/opt/consul/config"
-  command: "consul agent -config-dir /opt/consul/config -bootstrap-expect {{ consul.nodes }}{% if dont_join is undefined %} -join {{ consul.first_node_ip }}{% endif %}"
+    - "{{ deploy_user.stat.path }}/data:/var/consul"
+    - "{{ deploy_user.stat.path }}/config:/etc/consul"
+  command: "consul agent -config-dir /etc/consul -bootstrap-expect {{ consul.nodes }}{% if dont_join is undefined %} -join {{ consul.first_node_ip }}{% endif %}"
