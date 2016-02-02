@@ -1,6 +1,7 @@
 {{ srv_name }}:
   image: "{{ docker_image }}"
   user: "{{ deploy_user.stat.uid }}:{{ deploy_user.stat.gid }}"
+  net: "host"
   ports:
     - "2181:2181"
     - "2888:2888"
@@ -10,8 +11,8 @@
     SERVER_JVMFLAGS: "-Xms1g -Xmx2g"
 {% if zoo_cluster %}
     ZOO_ID: {{ hostvars[inventory_hostname].zoo_id }}
-    ZOO_SERVERS: "{% for host in groups['zookeeper_nodes'] %}{{ host }}:2888:3888{% if not loop.last %},{% endif %}{% endfor %}"
+    ZOO_SERVERS: "{{ zoo_servers }}"
 {% endif %}
   volumes:
-    - "{{ deploy_user.stat.path }}/data:/var/opt/zookeeper"
+    - "{{ deploy_user.stat.path }}/data:/var/zookeeper"
     - "{{ deploy_user.stat.path }}/config:/opt/zookeeper/conf"

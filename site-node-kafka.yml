@@ -1,9 +1,3 @@
-- name: "Install zookeeper"
-  hosts: zookeeper_nodes
-  gather_facts: yes
-  roles:
-  - zookeeper
-
 - name: "Install kafka"
   hosts: kafka_nodes
   gather_facts: yes
