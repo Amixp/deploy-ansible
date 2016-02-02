@@ -1,18 +1,16 @@
 {{ srv_name }}:
   image: "{{ docker_image }}"
   user: "{{ deploy_user.stat.uid }}:{{ deploy_user.stat.gid }}"
+  net: "host"
   ports:
     - "9092:9092"
   environment:
     SERVICE_TAGS: "{{ run_env }}"
+    RUN_ENV: "{{ run_env }}"
     ADVERTISED_HOST: {{ ansible_default_ipv4.address }}
+    PUBLIC_IP: {{ ansible_default_ipv4.address }}
     BROKER_ID: {{ hostvars[inventory_hostname].broker_id }}
     NUM_PARTITIONS: {{ kafka_num_partitions }}
-{% if zoo_cluster %}
-    ZOO_CONNECT: "{% for host in groups['zookeeper_nodes'] %}{{ host }}:2181{% if not loop.last %},{% endif %}{% endfor %}"
-{% else %}
-    ZOO_CONNECT: {{ ansible_default_ipv4.address }}:2181
-{% endif %}
   volumes:
-    - "{{ deploy_user.stat.path }}/data:/var/opt/kafka"
+    - "{{ deploy_user.stat.path }}/data:/var/kafka"
     - "{{ deploy_user.stat.path }}/config:/opt/kafka/config"
