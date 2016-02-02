@@ -6,3 +6,6 @@
   environment:
     SERVICE_TAGS: "{{ run_env }}"
     SERVICE_NAME: "{{ srv_name }}"
+  volumes:
+    - "{{ deploy_user.stat.path }}/data:/var/redis"
+    - "{{ deploy_user.stat.path }}/config:/opt/redis/config"
