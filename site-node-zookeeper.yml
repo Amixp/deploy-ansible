@@ -1,0 +1,5 @@
+- name: "Install zookeeper"
+  hosts: zookeeper_nodes
+  gather_facts: yes
+  roles:
+  - zookeeper
