@@ -16,6 +16,7 @@
     RUN_MODE_SERVER: "True"
     DATACENTER: "{{ consul.dc }}"
     EXTERNAL_IP: "{{ ansible_default_ipv4.address }}"
+    CLIENT_ADDR: "0.0.0.0"
     TOKEN: "{{ consul.token }}"
     UI_ENABLE: "True"
   volumes:
