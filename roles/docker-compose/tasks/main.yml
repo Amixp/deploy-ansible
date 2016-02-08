@@ -9,6 +9,11 @@
   become: yes
 
 - name: Docker Compose
-  shell: "pip install docker-compose"
+  shell: "pip install --upgrade --proxy={{ proxy_env.http_proxy }} docker-compose"
   become: yes
-  environment: "{{ proxy_env }}"
+  when: proxy_env.http_proxy is defined
+
+- name: Docker Compose
+  shell: "pip install --upgrade docker-compose"
+  become: yes
+  when: proxy_env.http_proxy is undefined

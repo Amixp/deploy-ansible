@@ -4,9 +4,14 @@
 - name: Add Key for Docker Repo
   tags: docker
   apt_key:
-    keyserver: hkp://pgp.mit.edu:80
+    keyserver: hkp://p80.pool.sks-keyservers.net:80
     id: 58118E89F3A912897C070ADBF76221572C52609D
     state: present
+  become: yes
+  environment: "{{ proxy_env }}"
+
+- name: Update apt cache
+  apt: update_cache=yes force=yes
   become: yes
   environment: "{{ proxy_env }}"
 
@@ -21,8 +26,13 @@
 
 - name: Install Prerequisites
   tags: docker
-  shell: "apt-get install linux-image-extra-$(uname -r)"
+  shell: "apt-get install {{ item }}"
+  with_items:
+  - "apt-transport-https"
+  - "ca-certificates"
+  - "linux-image-extra-$(uname -r)"
   become: yes
+  environment: "{{ proxy_env }}"
 
 - name: Install Docker Engine
   tags: docker
@@ -44,7 +54,7 @@
     mode: 0644
     owner: root
     group: root
-  when: proxy_env is defined
+  when: proxy_env.http_proxy is defined
   notify: restart docker
   become: yes
 
