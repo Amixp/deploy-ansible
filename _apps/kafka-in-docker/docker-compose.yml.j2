@@ -10,7 +10,7 @@
     ADVERTISED_HOST: {{ ansible_default_ipv4.address }}
     PUBLIC_IP: {{ ansible_default_ipv4.address }}
     BROKER_ID: {{ hostvars[inventory_hostname].broker_id }}
-    NUM_PARTITIONS: {{ kafka_num_partitions }}
+    REPLICATION_FACTOR: {{ kafka_replication_factor }}
   volumes:
     - "{{ deploy_user.stat.path }}/data:/var/kafka"
     - "{{ deploy_user.stat.path }}/config:/opt/kafka/config"
