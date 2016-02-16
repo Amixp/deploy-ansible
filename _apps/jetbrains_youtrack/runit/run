@@ -1,10 +1,6 @@
 #!/bin/bash
 
-sv -w 30 start jetbrains_hub || exit 1
-sleep 30
-
-# export HOME={{ app_home_dir }}
-export HOME=/opt/Upsource
+export HOME=/opt/youtrack
 export LANG=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 export JAVA_HOME=/usr/lib/jvm/java-8-oracle
@@ -17,5 +13,4 @@ export no_proxy="localhost,127.0.0.1,.dsk2.picompany.ru"
 
 cd $HOME
 exec 2>&1
-# exec chpst -u{{ user_name }} $HOME/bin/upsource.sh run
-exec chpst -ujetbrains_upsource $HOME/bin/upsource.sh run
+exec chpst -uyoutrack $HOME/bin/youtrack.sh run
