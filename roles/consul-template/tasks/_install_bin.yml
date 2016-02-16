@@ -1,0 +1,17 @@
+---
+- name: Download
+  get_url: url={{ dist_url }} dest=/tmp validate_certs=no
+
+- name: Extract
+  unarchive: src=/tmp/{{ dist_filename }} dest=/usr/local/bin copy=no
+  become: yes
+
+- name: Create dirs
+  file: path=/etc/consul-template/{{ item }} state=directory
+  become: yes
+  with_items:
+  - conf.d
+  - templates
+
+- name: Remove dist
+  action: file path=/tmp/{{ dist_filename }} state=absent

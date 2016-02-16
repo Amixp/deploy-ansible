@@ -1,0 +1,6 @@
+---
+- name: "Setup consul template"
+  hosts: all
+  gather_facts: yes
+  roles:
+  - consul-template

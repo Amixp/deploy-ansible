@@ -1,0 +1,9 @@
+---
+- name: Copy config
+  template: src=00.hcl.j2 dest=/etc/consul-template/conf.d/00.hcl owner=root group=root mode=644
+  become: yes
+
+- name: Copy upstart
+  template: src=upstart.conf.j2 dest=/etc/init/consul-template.conf owner=root group=root mode=644
+  become: yes
+  notify: restart consul-template

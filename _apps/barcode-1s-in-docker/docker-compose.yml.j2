@@ -1,0 +1,13 @@
+version: '2'
+services:
+  {{ srv_name }}:
+    image: "{{ docker_image }}"
+    user: "{{ deploy_user.stat.uid }}:{{ deploy_user.stat.gid }}"
+    ports:
+      - "3000"
+    environment:
+      SERVICE_TAGS: "{{ run_env }}"
+      SERVICE_NAME: "{{ srv_name }}"
+      RUN_ENV: "{{ run_env }}"
+    volumes:
+      - "{{ deploy_user.stat.path }}/config:/app/config"

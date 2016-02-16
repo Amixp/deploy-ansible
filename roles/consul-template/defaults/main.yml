@@ -1,0 +1,5 @@
+---
+dist_version: 0.12.1
+dist_filename: "consul-template_{{ dist_version }}_linux_amd64.zip"
+dist_url: "https://releases.hashicorp.com/consul-template/0.12.1/consul-template_0.12.1_linux_amd64.zip"
+# dist_url: "https://releases.hashicorp.com/consul-template/{{ dist_version }}/{{ dist_filename }}"

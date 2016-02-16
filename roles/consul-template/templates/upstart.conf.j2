@@ -1,0 +1,16 @@
+# Consul Template Service
+description "Consul Template"
+
+env BIN=/usr/local/bin/consul-template
+env CFG=/etc/consul-template/conf.d
+
+start on (local-filesystems and net-device-up IFACE!=lo) and started app-consul-agent
+stop on runlevel [!23]
+
+script
+  exec ${BIN} -config ${CFG} 2>&1
+end script
+
+respawn
+respawn limit 10 10
+kill timeout 10

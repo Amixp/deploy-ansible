@@ -14,3 +14,15 @@
   gather_facts: yes
   tasks:
   - include: lib/deploy_docker_app.yml
+
+- name: "Deploy App with Nginx"
+  hosts: all
+  gather_facts: yes
+  tasks:
+  - include: lib/run_app_with_nginx.yml app_name={{ app_name }}-in-docker
+
+- name: "Deploy App with Consul Template"
+  hosts: all
+  gather_facts: yes
+  tasks:
+  - include: lib/run_app_with_consul_template.yml

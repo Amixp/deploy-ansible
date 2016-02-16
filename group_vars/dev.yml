@@ -2,3 +2,4 @@
 zoo_cluster: false
 kafka_replication_factor: 1
 run_env: "development"
+nginx_install: yes

@@ -1,0 +1,18 @@
+---
+- name: Copy conf
+  template: src=../_apps/{{ app_name }}-in-docker/consul-template.hcl.j2 dest=/etc/consul-template/conf.d/{{ app_name }}.hcl mode=0644 owner=root group=root
+  become: yes
+  tags:
+  - "install_app"
+
+- name: Copy template
+  template: src=../_apps/{{ app_name }}-in-docker/nginx.ctmpl.j2 dest=/etc/consul-template/templates/{{ app_name }}.ctmpl mode=0644 owner=root group=root
+  become: yes
+  tags:
+  - "install_app"
+
+- name: Restart consul-template
+  service: name=consul-template state=restarted
+  become: yes
+  tags:
+  - "install_app"

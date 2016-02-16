@@ -1,17 +1,17 @@
-- name: "Install jruby"
-  hosts: app_nodes
-  gather_facts: yes
-  roles:
-  - { role: jruby, when: ruby_version == 'jruby' }
+# - name: "Install jruby"
+#   hosts: app_nodes
+#   gather_facts: yes
+#   roles:
+#   - { role: jruby, when: ruby_version == 'jruby' }
 
-- name: "Install redis"
-  hosts: app_nodes
-  gather_facts: yes
-  roles:
-  - { role: redis, when: redis_install is defined }
+# - name: "Install redis"
+#   hosts: app_nodes
+#   gather_facts: yes
+#   roles:
+#   - { role: redis, when: redis_install is defined }
 
 - name: "Install nginx"
-  hosts: app_nodes
+  hosts: dev
   gather_facts: yes
   roles:
   - nginx
