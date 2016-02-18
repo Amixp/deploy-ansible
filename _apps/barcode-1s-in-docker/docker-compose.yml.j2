@@ -9,5 +9,6 @@ services:
       SERVICE_TAGS: "{{ run_env }}"
       SERVICE_NAME: "{{ srv_name }}"
       RUN_ENV: "{{ run_env }}"
+      EXTERNAL_IP: "{{ ansible_default_ipv4.address }}"
     volumes:
       - "{{ deploy_user.stat.path }}/config:/app/config"
