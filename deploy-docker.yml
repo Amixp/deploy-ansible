@@ -20,9 +20,11 @@
   gather_facts: yes
   tasks:
   - include: lib/run_app_with_nginx.yml app_name={{ app_name }}-in-docker
+    when: nginx_and_ct is defined
 
 - name: "Deploy App with Consul Template"
   hosts: all
   gather_facts: yes
   tasks:
   - include: lib/run_app_with_consul_template.yml
+    when: nginx_and_ct is defined
