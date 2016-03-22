@@ -13,7 +13,12 @@ services:
     volumes:
       - "{{ deploy_user.stat.path }}/config:/app/config"
     depends_on:
-    - redis-{{ srv_name }}
+      - redis-{{ srv_name }}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
   redis-{{ srv_name }}:
     image: "docker-registry.dsk2.picompany.ru/redis:3.0.7"
     user: "{{ deploy_user.stat.uid }}:{{ deploy_user.stat.gid }}"
