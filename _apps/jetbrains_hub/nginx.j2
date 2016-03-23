@@ -5,6 +5,7 @@ upstream {{ srv_user.name }}_server {
 server {
     listen      80;
     server_name {{ inventory_hostname }};
+    server_tokens off;
 
     access_log /var/log/nginx/{{ srv_user.name }}-access.log;
     error_log  /var/log/nginx/{{ srv_user.name }}-error.log;

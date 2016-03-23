@@ -1,3 +1,6 @@
+# Upstart
+sudo initctl reload-configuration
+
 ansible all -m ping
 
 # Check facts

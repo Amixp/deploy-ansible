@@ -4,8 +4,20 @@
   copy: src=60-user.conf dest=/etc/sysctl.d/60-user.conf owner=root group=root mode=0644
   sudo: yes
 
-- name: Tuning open files limits
-  copy: src=openfiles.conf dest=/etc/security/limits.d/openfiles.conf owner=root group=root mode=0644
+- name: Tuning nofile - max number of open files
+  copy: src=limits-nofile.conf dest=/etc/security/limits.d/nofile.conf owner=root group=root mode=0644
+  sudo: yes
+
+- name: Tuning memlock - max locked-in-memory address space
+  copy: src=limits-memlock.conf dest=/etc/security/limits.d/memlock.conf owner=root group=root mode=0644
+  sudo: yes
+
+- name: Tuning nproc - max number of processes
+  copy: src=limits-nproc.conf dest=/etc/security/limits.d/nproc.conf owner=root group=root mode=0644
+  sudo: yes
+
+- name: Tuning as - address space limit
+  copy: src=limits-as.conf dest=/etc/security/limits.d/as.conf owner=root group=root mode=0644
   sudo: yes
 
 - name: Enable limits for sudo
