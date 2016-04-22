@@ -2,7 +2,6 @@ version: '2'
 services:
   {{ srv_name }}:
     image: "{{ docker_image }}"
-    user: "{{ deploy_user.stat.uid }}:{{ deploy_user.stat.gid }}"
     ports:
       - "3000"
     environment:
@@ -10,24 +9,12 @@ services:
       SERVICE_NAME: "{{ srv_name }}"
       RUN_ENV: "{{ run_env }}"
       EXTERNAL_IP: "{{ ansible_default_ipv4.address }}"
+      USER_ID: "{{ deploy_user.stat.uid }}"
+      GROUP_ID: "{{ deploy_user.stat.gid }}"
     volumes:
       - "{{ deploy_user.stat.path }}/config:/app/config"
-    depends_on:
-      - redis-{{ srv_name }}
     logging:
       driver: "json-file"
       options:
         max-size: "1m"
         max-file: "3"
-  redis-{{ srv_name }}:
-    image: "docker-registry.dsk2.picompany.ru/redis:3.0.7"
-    user: "{{ deploy_user.stat.uid }}:{{ deploy_user.stat.gid }}"
-    ports:
-      - "6379"
-    environment:
-      SERVICE_TAGS: "{{ run_env }}"
-      SERVICE_NAME: "redis-{{ srv_name }}"
-      RUN_ENV: "{{ run_env }}"
-    volumes:
-      - "{{ deploy_user.stat.path }}/redis:/var/redis"
-      - "{{ deploy_user.stat.path }}/redis/config:/opt/redis/config"
