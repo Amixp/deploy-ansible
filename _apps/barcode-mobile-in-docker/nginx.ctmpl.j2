@@ -1,11 +1,23 @@
 #jinja2:variable_start_string:'[%' , variable_end_string:'%]'
+
+ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+ssl_ciphers ALL:!ADH:!EXP:!LOW:!RC2:!3DES:!SEED:!MD5:!aNULL:!eNULL:!NULL:!DH:!EDH:!AESGCM:!RC4:+HIGH:+MEDIUM;
+ssl_prefer_server_ciphers on;
+
+ssl_session_cache shared:SSL:10m;
+ssl_session_timeout 10m;
+
 upstream [% app_name %]_server { {{range service "[% run_env %].[% app_name %]"}}
     server localhost:{{.Port}};{{end}}
 }
 
 server {
-    listen      80;
+    listen 443;
     server_name [% inventory_hostname %];
+
+    ssl on;
+    ssl_certificate /etc/ssl/certs/barcode-mobile.crt;
+    ssl_certificate_key /etc/ssl/private/barcode-mobile.key;
 
     access_log /var/log/nginx/[% app_name %]-access.log;
     error_log  /var/log/nginx/[% app_name%]-error.log;
