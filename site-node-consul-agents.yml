@@ -5,8 +5,8 @@
   tasks:
   - include: lib/deploy_docker_app.yml app_name=consul-agent srv_name=consul-agent docker_image=docker-registry.dsk2.picompany.ru/consul:0.6.3
 
-# - name: "Setup Registrator on dev"
-#   hosts: dev
-#   gather_facts: yes
-#   tasks:
-#   - include: lib/deploy_docker_app.yml app_name=registrator srv_name=registrator docker_image=docker-registry.dsk2.picompany.ru/registrator:latest
+- name: "Setup Registrator on dev"
+  hosts: all
+  gather_facts: yes
+  tasks:
+  - include: lib/deploy_docker_app.yml app_name=registrator srv_name=registrator docker_image=docker-registry.dsk2.picompany.ru/registrator:latest
