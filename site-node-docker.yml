@@ -1,5 +1,5 @@
 - name: "Setup node"
-  hosts: all
+  hosts: barcode_mobile
   gather_facts: yes
 
   roles:

@@ -1,0 +1,18 @@
+---
+# file: roles/docker/tasks/_docker-reg-cert.yml
+
+- name: Add CA cert for local Docker Registry
+  tags: docker-ca-cert
+  copy:
+    src: keys/ica01pikCA.crt
+    dest: /usr/local/share/ca-certificates/ica01pikCA.crt
+    owner: root
+    group: root
+    mode: 0640
+  become: yes
+
+- name: Update CA certificates
+  tags: docker-ca-cert
+  shell: "update-ca-certificates"
+  notify: restart docker
+  become: yes

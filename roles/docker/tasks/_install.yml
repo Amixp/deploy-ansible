@@ -46,6 +46,7 @@
   service:
     name: docker
     enabled: yes
+  become: yes
 
 - name: Copy conf file
   template:

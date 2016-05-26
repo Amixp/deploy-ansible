@@ -4,3 +4,4 @@
 - include: _install.yml
 - include: _optional.yml
 - include: _docker-py.yml
+# - include: _docker-reg-cert.yml - role: ca-certificates
