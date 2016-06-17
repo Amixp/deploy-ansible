@@ -2,11 +2,17 @@
 - name: Copy nginx.conf
   template: src=../group_files/nginx_conf.j2 dest=/etc/nginx/nginx.conf mode=0644 owner=root group=root
   become: yes
+  tags:
+  - "install_app"
 
 - name: Copy nginx conf.d files
   template: src=../_apps/{{ app_name }}/nginx.j2 dest=/etc/nginx/conf.d/{{ app_name }}.conf mode=0644 owner=root group=root
   become: yes
+  tags:
+  - "install_app"
 
 - name: Restart nginx
   service: name=nginx state=restarted
   become: yes
+  tags:
+  - "install_app"
