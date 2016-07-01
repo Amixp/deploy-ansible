@@ -4,9 +4,9 @@
 
   roles:
   - apt_update
-  - kernel_update
+  # - kernel_update
   - common
-  - { role: ca-certificates, when: updateCA }
+  # - { role: ca-certificates, when: updateCA }
   - oh-my-zsh
-  - runit
+  # - runit
   # - monit

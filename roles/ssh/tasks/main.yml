@@ -16,6 +16,6 @@
   with_items:
     - { regexp: "^Port", line: "Port {{ ssh_port }}" }
     - { regexp: "^PermitRootLogin", line: "PermitRootLogin no" }
-    - { regexp: "PasswordAuthentication (yes|no)", line: "PasswordAuthentication no" }
+    - { regexp: "PasswordAuthentication ", line: "PasswordAuthentication no" }
   notify:
     - restart ssh

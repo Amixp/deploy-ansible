@@ -11,8 +11,7 @@
 #   - { role: redis, when: redis_install is defined }
 
 - name: "Install nginx"
-  hosts: dev
+  hosts: all
   gather_facts: yes
   roles:
-  - nginx
   - { role: nginx, when: nginx_install is defined }

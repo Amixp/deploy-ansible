@@ -1,5 +1,5 @@
 ---
-name: Copy environment config
-template: src=environment.j2 dest=/etc/environment mode=0644 owner=root group=root
-become: yes
-when: proxy_name is defined
+- name: Copy environment config
+  template: src=environment.j2 dest=/etc/environment mode=0644 owner=root group=root
+  become: yes
+  when: proxy_name is defined

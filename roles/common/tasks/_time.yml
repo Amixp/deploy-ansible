@@ -7,7 +7,7 @@
 
 - name: Install NTP
   apt: package=ntp state=present
-  sudo: yes
+  become: yes
 
 - name: Config NTP
   template:
@@ -18,8 +18,8 @@
     group: root
   when: time_server is defined
   notify: restart ntp
-  sudo: yes
+  become: yes
 
 - name: Config
   service: name=ntp state=started enabled=yes
-  sudo: yes
+  become: yes

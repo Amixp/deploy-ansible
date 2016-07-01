@@ -1,3 +1,4 @@
 ---
 - name: locale gen
-  shell: "sudo locale-gen {{ locale_gen }}"
+  shell: "locale-gen {{ locale_gen }}"
+  become: yes

@@ -3,7 +3,7 @@
 
 - name: Install some packages
   apt: package={{ item }} state=latest install_recommends=yes
-  sudo: yes
+  become: yes
   with_items:
     - zsh
     - git
@@ -15,7 +15,7 @@
     mode: 0644
     owner: root
     group: root
-  sudo: yes
+  become: yes
 
 - name: Install oh-my-zsh
   git:
@@ -38,7 +38,7 @@
 
 - name: Change bash to zsh for current user
   user: name={{ ssh_user.name }} shell=/bin/zsh
-  sudo: yes
+  become: yes
 
 - name: Remove bash files
   shell: "rm -f ~/.bash* ~/.profile"

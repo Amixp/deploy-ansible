@@ -13,6 +13,13 @@
     append: yes
   when: ansible_lsb.codename == 'trusty'
 
+- name: Append user into groups (Ubuntu 16.04)
+  user:
+    name: "{{ ssh_user.name }}"
+    groups: "adm,cdrom,sudo,dip,plugdev,lxd,lpadmin,sambashare"
+    append: yes
+  when: ansible_lsb.codename == 'xenial'
+
 - name: Set password
   shell: "echo {{ ssh_user.name }}:{{ ssh_user.password }} | chpasswd"
 

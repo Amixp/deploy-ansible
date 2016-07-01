@@ -1,7 +1,8 @@
 - name: "Make initial tasks"
   hosts: all
   gather_facts: yes
-  remote_user: root
+  remote_user: ubuntu
+  become: yes
 
   roles:
   - fix_etc_hosts

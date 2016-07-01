@@ -1,12 +1,12 @@
 ---
 - name: Add Ubuntu Git Maintainers team Repo
   apt_repository: repo='ppa:git-core/ppa' state=present update_cache=yes
-  sudo: yes
+  become: yes
   environment: "{{ proxy_env }}"
 
 - name: Install some packages
   apt: package={{ item }} state=latest install_recommends=yes
-  sudo: yes
+  become: yes
   with_items:
     - tree
     - htop

@@ -1,4 +1,4 @@
 ---
 - name: "For add ppa:* repos"
   apt: package=python-software-properties state=present
-  sudo: yes
+  become: yes
