@@ -1,0 +1,8 @@
+---
+nginx_install: yes
+run_env: "production"
+time_server: "192.168.100.26"
+ssh_user:
+  name: 'ubuntu'
+  password: 'Qwerty762'
+ansible_python_interpreter: "/usr/bin/python2.7"
