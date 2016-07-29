@@ -1,38 +1,38 @@
 ---
 - name: Create runit dir for App
   file: path=/etc/sv/{{ app_name }} owner=root group=root mode=755 state=directory
-  sudo: yes
+  become: yes
 
-- name: Create runit dir for App
+- name: Create runit dir Log for App
   file: path=/etc/sv/{{ app_name }}/log owner=root group=root mode=755 state=directory
-  sudo: yes
+  become: yes
 
 - name: Copy runit config for App
   tags: update
   template: src=../_apps/{{ app_name }}/runit/run dest=/etc/sv/{{ app_name }}/run owner=root group=root mode=755
-  sudo: yes
+  become: yes
 
 - name: Copy runit config Log for App
   template: src=../_apps/{{ app_name }}/runit/log/run dest=/etc/sv/{{ app_name }}/log/run owner=root group=root mode=755
-  sudo: yes
+  become: yes
 
 - name: Create runit Log dir for App
   file: path=/var/log/runit/{{ app_name }} owner=root group=root mode=755 state=directory
-  sudo: yes
+  become: yes
 
 - name: Copy runit Log config for App
   template: src=../_apps/{{ app_name }}/runit/log/config dest=/var/log/runit/{{ app_name }} owner=root group=root mode=644
-  sudo: yes
+  become: yes
 
 - name: Check service dir exists
   stat: path=/etc/service/{{ app_name }}
   register: p
 
 - name: Stop App
-  shell: "rm /etc/service/{{ app_name }}; sleep 5"
-  sudo: yes
+  shell: "rm /etc/service/{{ app_name }}; sleep 10"
+  become: yes
   when: p.stat.exists == true
 
 - name: Link App
   shell: "ln -sf /etc/sv/{{ app_name }} /etc/service/"
-  sudo: yes
+  become: yes

@@ -1,0 +1,21 @@
+---
+defaults: &defaults
+  debug: true
+  app_name: "barcode-mobile"
+  sqlserver:
+    host: "1cdev01sql.dsk2.picompany.ru"
+    db: "barcode_dev"
+    user: "barcode_app"
+    pass: "w2ABLmUMq9capxZT"
+
+development:
+  <<: *defaults
+
+production:
+  debug: true
+  app_name: "barcode-mobile"
+  sqlserver:
+    host: "1csqlcl.dsk2.picompany.ru"
+    db: "barcode_prod"
+    user: "barcode_api"
+    pass: "VEJ3EKLyLccD2FxToaEx"

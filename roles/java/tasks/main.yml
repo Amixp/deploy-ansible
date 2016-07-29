@@ -4,37 +4,37 @@
 - name: Deinstall OpenJDK
   tags: java
   apt: package=openjdk-* state=absent purge=yes
-  sudo: yes
+  become: yes
 
 # - name: Deinstall Java
 #   tags: java
 #   apt: package=oracle-java{{ java_version }}-installer* state=absent purge=yes
-#   sudo: yes
+#   become: yes
 
 - name: Add Webupd8Team Repo
   tags: java
   apt_repository: repo='ppa:webupd8team/java' state=present update_cache=yes
-  sudo: yes
+  become: yes
   environment: "{{ proxy_env }}"
 
 - name: Automatically select the Oracle License
   tags: java
   shell: echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
-  sudo: yes
+  become: yes
 
 - name: Install Java
   tags: java
   action: apt pkg=oracle-java{{ java_version }}-installer state=latest install_recommends=yes
-  sudo: yes
+  become: yes
   environment: "{{ proxy_env }}"
 
 - name: Set Java Env
   tags: java
   action: apt pkg=oracle-java{{ java_version }}-set-default state=latest install_recommends=yes
-  sudo: yes
+  become: yes
   environment: "{{ proxy_env }}"
 
 - name: Add JAVA_HOME env
   tags: java
   action: lineinfile dest=/etc/environment regexp=^JAVA_HOME= line=JAVA_HOME="/usr/lib/jvm/java-{{ java_version }}-oracle"
-  sudo: yes
+  become: yes

@@ -1,7 +1,20 @@
 ---
 - name: Make App Dir
-  file: path=/home/{{ deploy_user_name }}/apps/{{ app_name }} state=directory
+  file: path=/home/{{ user_name }}/apps/{{ app_name }} state=directory
+  become: yes
+  become_user: "{{ user_name }}"
 
-- name: Download App jar
-  get_url: "url={{ jar_url }} dest=/home/{{ deploy_user_name }}/apps/{{ app_name }}/{{ jar_name }}"
-  environment: "{{ proxy_env }}"
+# - name: Download App jar
+#   get_url: "url={{ jar_url }} dest=/home/{{ user_name }}/apps/{{ app_name }}/{{ jar_name }}"
+#   become: yes
+#   become_user: "{{ user_name }}"
+
+- name: Copy Jar
+  copy: src={{ jar_file }} dest=/home/{{ user_name }}/apps/{{ app_name }}/app.jar
+  become: yes
+  become_user: "{{ user_name }}"
+
+- name: Copy config
+  copy: src=../_apps/{{ app_name }}/config dest=/home/{{ user_name }}/apps/{{ app_name }}
+  become: yes
+  become_user: "{{ user_name }}"
