@@ -6,7 +6,7 @@
   - "install_app"
 
 - name: Copy nginx conf.d files
-  template: src=../_apps/{{ app_name }}/nginx.j2 dest=/etc/nginx/conf.d/{{ app_name }}.conf mode=0644 owner=root group=root
+  template: src=../_apps/{{ app_dir }}/nginx.j2 dest=/etc/nginx/conf.d/{{ app_name }}.conf mode=0644 owner=root group=root
   become: yes
   tags:
   - "install_app"

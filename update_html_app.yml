@@ -1,0 +1,9 @@
+---
+# Update Html App
+
+- name: "Update App"
+  hosts: "{{ hostname }}"
+  gather_facts: False
+  remote_user: "{{ deploy_user_name }}"
+  tasks:
+  - include: lib/update_html_app.yml app_name={{ deploy_user_name }}

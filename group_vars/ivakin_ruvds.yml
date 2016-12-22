@@ -1,0 +1,12 @@
+---
+nginx_install: yes
+# root : 0oX4a0j7
+ssh_user:
+  name: 'ubuntu'
+  password: 'gtiTf]d*6As2d9QrnhJx'
+ssh_key: 'ivakin.ruvds'
+ssh_port: 22
+ssh_install: true
+ansible_python_interpreter: "/usr/bin/python2.7"
+proxy_env:
+  no_proxy: "localhost,127.0.0.1"
