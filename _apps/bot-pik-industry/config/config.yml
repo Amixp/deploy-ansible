@@ -1,0 +1,11 @@
+---
+defaults: &defaults
+  app_name: "pik-industry-bot"
+  telegram_api_token: "278072378:AAHKBh8WpdWq3-s0kt3ZXm5bkJUZnuIZJ78"
+
+development:
+  <<: *defaults
+
+production:
+  app_name: "pik-industry-bot"
+  telegram_api_token: "278072378:AAHKBh8WpdWq3-s0kt3ZXm5bkJUZnuIZJ78"
