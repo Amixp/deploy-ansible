@@ -1,0 +1,39 @@
+upstream {{ app_name }}_server {
+  server localhost:3000;
+}
+
+server {
+    listen      80;
+    server_name {{ inventory_hostname }};
+
+    access_log /var/log/nginx/{{ app_name }}-access.log;
+    error_log  /var/log/nginx/{{ app_name }}-error.log;
+
+    client_header_buffer_size 128k;
+    client_max_body_size      8m;
+
+    location = /favicon.ico {
+        log_not_found off;
+        access_log    off;
+    }
+
+    location = /robots.txt {
+        allow         all;
+        log_not_found off;
+        access_log    off;
+    }
+
+    location /api {
+        access_log off;
+
+        proxy_pass http://{{ app_name }}_server;
+
+        proxy_set_header X-Forwarded-Host $http_host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+        proxy_http_version 1.1;
+    }
+}

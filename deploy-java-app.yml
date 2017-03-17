@@ -4,21 +4,25 @@
   gather_facts: yes
   tasks:
   - include: lib/new_deploy_user.yml user_name={{ app_name }}
-  tags:
-  - "create_user"
+    tags: create_user
 
 - name: "Deploy App. Jar"
   hosts: all
   gather_facts: yes
   tasks:
   - include: lib/deploy_java_jar_app.yml user_name={{ app_name }}
-  tags:
-  - "install_app"
+    tags: install_app
 
 - name: "Deploy App. Runit"
   hosts: all
   gather_facts: yes
   tasks:
   - include: lib/run_app_with_runit.yml user_name={{ app_name }}
-  tags:
-  - "runit_app"
+    tags: runit_app
+
+- name: "Run App with Nginx"
+  hosts: all
+  gather_facts: yes
+  tasks:
+  - include: lib/run_app_with_nginx.yml
+    tags: nginx_app
