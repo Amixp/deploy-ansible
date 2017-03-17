@@ -1,28 +1,19 @@
 ---
-- name: "Deploy App. Create User"
-  hosts: all
-  gather_facts: yes
-  tasks:
-  - include: lib/new_deploy_user.yml user_name={{ app_name }}
-    tags: create_user
 
-- name: "Deploy App. Jar"
+- name: "Deploy Java App"
   hosts: all
   gather_facts: yes
   tasks:
-  - include: lib/deploy_java_jar_app.yml user_name={{ app_name }}
-    tags: install_app
+    - include: lib/new_deploy_user.yml user_name={{ app_name }}
+      tags: install
+    - include: lib/deploy_java_jar_app.yml user_name={{ app_name }}
+      tags: [install,update]
+    - include: lib/run_app_with_runit.yml user_name={{ app_name }}
+      tags: install
+    - include: lib/run_app_with_nginx.yml
+      tags: install
 
-- name: "Deploy App. Runit"
-  hosts: all
-  gather_facts: yes
-  tasks:
-  - include: lib/run_app_with_runit.yml user_name={{ app_name }}
-    tags: runit_app
-
-- name: "Run App with Nginx"
-  hosts: all
-  gather_facts: yes
-  tasks:
-  - include: lib/run_app_with_nginx.yml
-    tags: nginx_app
+    - name: "Restart App"
+      tags: update
+      shell: "sv restart {{ app_name }}"
+      become: yes
