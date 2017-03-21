@@ -1,23 +1,28 @@
 ---
 # Deploy Html App With Nginx
 
-- name: "Create Deploy User"
-  hosts: "{{ hostname }}"
-  gather_facts: False
-  # remote_user: "{{ sudo_user }}"
+- name: "Deploy HTML App"
+  hosts: all
+  gather_facts: yes
   tasks:
-  - include: lib/new_deploy_user.yml user_name={{ deploy_user_name }}
+    - include: lib/new_deploy_user.yml user_name={{ deploy_user_name }}
+      tags: install
+    - include: lib/deploy_html_app.yml
+      tags: [install,update]
+    - include: lib/run_app_with_nginx.yml
+      tags: install
 
-- name: "Deploy App"
-  hosts: "{{ hostname }}"
-  gather_facts: False
-  remote_user: "{{ deploy_user_name }}"
-  tasks:
-  - include: lib/deploy_html_app.yml app_name={{ deploy_user_name }}
 
-- name: "Run App with Nginx"
-  hosts: "{{ hostname }}"
-  gather_facts: True
-  # remote_user: "{{ sudo_user }}"
-  tasks:
-  - include: lib/run_app_with_nginx.yml app_name={{ deploy_user_name }}
+# - name: "Deploy App"
+#   hosts: "{{ hostname }}"
+#   gather_facts: False
+#   remote_user: "{{ deploy_user_name }}"
+#   tasks:
+#   - include: lib/deploy_html_app.yml app_name={{ deploy_user_name }}
+
+# - name: "Run App with Nginx"
+#   hosts: "{{ hostname }}"
+#   gather_facts: True
+#   # remote_user: "{{ sudo_user }}"
+#   tasks:
+#   - include: lib/run_app_with_nginx.yml app_name={{ deploy_user_name }}
