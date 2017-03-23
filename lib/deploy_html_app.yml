@@ -1,8 +1,15 @@
 ---
 - name: Make App Dir
+  tags: install
   remote_user: "{{ deploy_user_name }}"
   file: path=/home/{{ deploy_user_name }}/apps state=directory
 
 - name: Copy Web dir
+  tags: [install,update]
   remote_user: "{{ deploy_user_name }}"
-  synchronize: dest_port="{{ ssh_port }}" src="{{ src_path }}/" dest="/home/{{ deploy_user_name }}/apps/{{ app_name }}" delete=yes rsync_opts=--exclude=.git,--exclude=.DS_Store
+  synchronize:
+    dest_port: "{{ ssh_port }}"
+    src: "{{ src_path }}/"
+    dest: "/home/{{ deploy_user_name }}/apps/{{ app_name }}"
+    delete: yes
+    rsync_opts: "--exclude=.git,--exclude=.DS_Store"
