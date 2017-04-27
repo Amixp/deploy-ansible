@@ -1,0 +1,42 @@
+upstream dashboard_cars_frontend {
+    server 192.168.100.26:18003;
+}
+
+server {
+    listen 30301;
+    server_name dashboard-cars.pik-industry.ru;
+
+    access_log /var/log/nginx/dashboard-cars-access.log;
+    error_log  /var/log/nginx/dashboard-cars-error.log;
+
+    client_header_buffer_size 128k;
+    client_max_body_size      8m;
+
+    location = /favicon.ico {
+        log_not_found off;
+        access_log    off;
+    }
+
+    location = /robots.txt {
+        allow         all;
+        log_not_found off;
+        access_log    off;
+    }
+
+    location / {
+        access_log on;
+
+        proxy_pass http://dashboard_cars_frontend;
+        proxy_redirect off;
+        proxy_buffering off;
+
+        proxy_set_header X-Forwarded-Host $http_host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+        proxy_http_version 1.1;
+    }
+
+}
