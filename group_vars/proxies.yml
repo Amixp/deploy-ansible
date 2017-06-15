@@ -1,0 +1,10 @@
+---
+ssh_port: 22
+ssh_install: true
+ssh_user:
+  name: 'ubuntu'
+  password: 'XUMp7JbFHj8rTXGTqH'
+ssh_key: 'picompany.ru'
+proxy_name: !!null
+proxy_env: !!null
+time_server: "dc02dsk2.dsk2.picompany.ru"

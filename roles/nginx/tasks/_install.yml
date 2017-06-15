@@ -1,0 +1,36 @@
+---
+- name: Deinstall nginx
+  tags: nginx
+  apt: package=nginx-common state=absent purge=yes
+  become: yes
+
+- name: Add Key for Nginx Repo
+  tags: nginx
+  apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
+  become: yes
+  environment: "{{ proxy_env }}"
+
+- name: Add Nginx Repo
+  tags: nginx
+  apt_repository: repo='deb http://nginx.org/packages/ubuntu/ xenial nginx' state=present update_cache=yes
+  become: yes
+  environment: "{{ proxy_env }}"
+
+- name: Add Nginx Src Repo
+  tags: nginx
+  apt_repository: repo='deb-src http://nginx.org/packages/ubuntu/ xenial nginx' state=present update_cache=yes
+  become: yes
+  environment: "{{ proxy_env }}"
+
+# - name: Install some packages
+#   apt: package={{ item }} state=latest install_recommends=yes
+#   become: yes
+#   with_items:
+#     - build-essential
+#     - libssl-dev
+#     - libev-dev
+
+- name: Install nginx
+  tags: nginx
+  action: apt pkg=nginx state=latest force=yes install_recommends=yes
+  become: yes

@@ -6,4 +6,4 @@
 - include: _ppa_repos.yml
 # - include: _sysctl.yml
 - include: _soft.yml
-- include: _proxy.yml
+# - include: _proxy.yml

@@ -2,9 +2,9 @@
   hosts: all
   gather_facts: yes
   # remote_user: ubuntu
-  become: yes
+  # become: yes
 
   roles:
   # - fix_etc_hosts
-  - user_sudo
+  # - user_sudo
   - ssh

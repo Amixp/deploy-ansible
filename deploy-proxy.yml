@@ -1,0 +1,6 @@
+---
+- name: "Deploy Proxy"
+  hosts: all
+  gather_facts: yes
+  tasks:
+  - include: lib/run_app_with_nginx.yml app_name={{ app_dir }}

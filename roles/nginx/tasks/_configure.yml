@@ -1,0 +1,22 @@
+---
+- name: Copy nginx.conf
+  template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf mode=0644 owner=root group=root mode=644
+  become: yes
+
+- name: Clear conf.d dir
+  tags: nginx
+  shell: "rm -f /etc/nginx/conf.d/*"
+  become: yes
+  # notify: restart nginx
+
+## - name: Conf for HttpStubStatusModule
+##   tags: nginx
+##   copy: src=status.conf dest=/etc/nginx/conf.d/status.conf mode=0644 owner=root group=root
+##   become: yes
+##   notify: restart nginx
+##   when: stub_status is defined
+
+## - name: Config for monit
+##   copy: src=monit dest=/etc/monit/conf.d/nginx mode=0600 owner=root group=root
+##   become: yes
+##   notify: restart monit

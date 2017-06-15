@@ -4,7 +4,7 @@
 - name: Apt proxy setup
   template: src=apt.conf dest=/etc/apt/apt.conf mode=0644 owner=root group=root
   become: yes
-  when: proxy_name is defined
+  when: (proxy_name is defined) and (proxy_name != None)
 
 - name: Update apt cache
   apt: update_cache=yes force=yes

@@ -9,6 +9,7 @@
     - "group_files/keys/ssh/{{ ssh_key }}.pub"
 
 - name: configures SSH daemon
+  become: yes
   lineinfile:
     dest: "/etc/ssh/sshd_config"
     regexp: "{{ item.regexp }}"

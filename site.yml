@@ -3,8 +3,9 @@
 # - include: site-node-initial.yml
 
 - include: "site-node-common.yml"
-- include: "site-node-docker.yml"
+# - include: "site-node-docker.yml"
 
+# - include: "site-node-nginx.yml"
 # - include: "site-node-java.yml"
 # - include: "site-node-kafka.yml"
 # - include: "site-node-app.yml"
