@@ -2,7 +2,7 @@
 # file: roles/common/tasks/main.yml
 
 - include: _locale.yml
-- include: _time.yml
+# - include: _time.yml
 - include: _ppa_repos.yml
 # - include: _sysctl.yml
 - include: _soft.yml

@@ -15,7 +15,7 @@
   tags: java
   apt_repository: repo='ppa:webupd8team/java' state=present update_cache=yes
   become: yes
-  environment: "{{ proxy_env }}"
+  # environment: "{{ proxy_env }}"
 
 - name: Automatically select the Oracle License
   tags: java
@@ -26,13 +26,13 @@
   tags: java
   action: apt pkg=oracle-java{{ java_version }}-installer state=latest install_recommends=yes
   become: yes
-  environment: "{{ proxy_env }}"
+  # environment: "{{ proxy_env }}"
 
 - name: Set Java Env
   tags: java
   action: apt pkg=oracle-java{{ java_version }}-set-default state=latest install_recommends=yes
   become: yes
-  environment: "{{ proxy_env }}"
+  # environment: "{{ proxy_env }}"
 
 - name: Add JAVA_HOME env
   tags: java
