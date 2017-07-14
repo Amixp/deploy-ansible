@@ -27,7 +27,7 @@
   when: ssh_install is defined
 
 - name: For ssh connect as deployment user
-  copy: src=../_apps/{{ app_dir }}/authorized_keys_{{ cloud_name }} dest=/home/{{ user_name }}/.ssh/authorized_keys owner={{ user_name }} group={{ user_name }} mode=400
+  copy: src=../_apps/{{ app_dir }}/keys/authorized_keys_{{ cloud_name }} dest=/home/{{ user_name }}/.ssh/authorized_keys owner={{ user_name }} group={{ user_name }} mode=400
   become: yes
   when: ssh_install is defined
 
