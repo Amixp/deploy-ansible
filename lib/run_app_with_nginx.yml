@@ -2,22 +2,22 @@
 - name: Copy nginx server conf
   template: src=../_apps/{{ app_dir }}/nginx.j2 dest=/etc/nginx/conf.d/{{ app_name }}.conf mode=0644 owner=root group=root
   become: yes
-  when: http_on is defined
+  when: http_on == 'yes'
 
 - name: Copy ssl cert
   copy: src=_apps/{{ app_dir }}/keys/public.crt dest=/etc/ssl/certs/{{ app_name }}.crt owner=root group=root mode=444
   become: yes
-  when: https_on is defined
+  when: https_on is defined and ssl_multi is undefined
 
 - name: Copy ssl key
   copy: src=_apps/{{ app_dir }}/keys/keyfile-decrypted.key dest=/etc/ssl/private/{{ app_name }}.key owner=root group=root mode=400
   become: yes
-  when: https_on is defined
+  when: https_on is defined and ssl_multi is undefined
 
 - name: Copy nginx ssl server conf
   template: src=../_apps/{{ app_dir }}/nginx.ssl.j2 dest=/etc/nginx/conf.d/{{ app_name }}.ssl.conf mode=0644 owner=root group=root
   become: yes
-  when: https_on is defined
+  when: https_on == 'yes'
 
 - name: Restart nginx
   service: name=nginx state=restarted
