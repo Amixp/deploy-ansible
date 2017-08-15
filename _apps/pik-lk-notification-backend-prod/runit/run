@@ -8,10 +8,10 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export CHARSET=UTF-8
 
-export http_proxy=http://proxy.picompany.ru:8080/
-export https_proxy=http://proxy.picompany.ru:8080/
-export ftp_proxy=http://proxy.picompany.ru:8080/
-export no_proxy=localhost,127.0.0.1,.dsk2.picompany.ru
+# export http_proxy=http://proxy.picompany.ru:8080/
+# export https_proxy=http://proxy.picompany.ru:8080/
+# export ftp_proxy=http://proxy.picompany.ru:8080/
+# export no_proxy=localhost,127.0.0.1,.dsk2.picompany.ru
 
 export JAVA_HOME=/usr/lib/jvm/java-8-oracle
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$JAVA_HOME/bin:$JAVA_HOME/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin
