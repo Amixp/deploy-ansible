@@ -1,0 +1,22 @@
+#!/bin/bash
+
+export LANGUAGE=en_US:en
+export LC_CTYPE=ru_RU.UTF-8
+export LC_COLLATE=en_US.UTF-8
+export LC_TYPE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export CHARSET=UTF-8
+
+export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$JAVA_HOME/bin:$JAVA_HOME/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin
+
+export RUN_ENV={{ app_env }}
+export HOME=/home/{{ user_name }}
+export APP_HOME=$HOME/apps/{{ app_name }}
+
+BIN="java -Dhttp.proxyHost=proxy.picompany.ru -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy.picompany.ru -Dhttps.proxyPort=8080 -jar ${APP_HOME}/app.jar"
+
+cd ${APP_HOME}
+exec 2>&1
+exec chpst -u{{ user_name }} ${BIN}
