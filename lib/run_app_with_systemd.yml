@@ -1,0 +1,6 @@
+---
+- name: Copy service file for App
+  tags: update
+  template: src=../_apps/{{ app_name }}/systemd/java.service dest=/etc/systemd/system/{{ app_name }}.service owner=root group=root mode=755
+  become: yes
+

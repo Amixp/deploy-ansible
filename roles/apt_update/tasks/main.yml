@@ -6,6 +6,12 @@
 #   become: yes
 #   when: (proxy_name is defined) and (proxy_name != None)
 
+- name: Install some packages
+  apt: package={{ item }} state=latest install_recommends=yes
+  become: yes
+  with_items:
+    - aptitude
+
 - name: Update apt cache
   apt: update_cache=yes force=yes
   become: yes

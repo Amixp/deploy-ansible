@@ -7,6 +7,6 @@
   # - kernel_update
   - common
   # - { role: ca-certificates, when: updateCA }
-  - oh-my-zsh
+  # - oh-my-zsh
   # - runit
   # - monit

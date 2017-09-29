@@ -1,21 +1,22 @@
 ---
 - name: Create user
-  user: name={{ user_name }} comment="Deploy User - {{ user_name }}" shell=/bin/zsh
+  # user: name={{ user_name }} comment="Deploy User - {{ user_name }}" shell=/bin/zsh
+  user: name={{ user_name }} comment="Deploy User - {{ user_name }}" shell=/bin/bash
   become: yes
 
-- name: For zsh
-  template: src=../group_files/zshrc.j2 dest=/home/{{ user_name }}/.zshrc owner={{ user_name }} group={{ user_name }} mode=644
-  become: yes
-  when: ruby_version is undefined
+# - name: For zsh
+#   template: src=../group_files/zshrc.j2 dest=/home/{{ user_name }}/.zshrc owner={{ user_name }} group={{ user_name }} mode=644
+#   become: yes
+#   when: ruby_version is undefined
 
-- name: For zsh with ruby
-  template: src=../group_files/zshrc_ruby.j2 dest=/home/{{ user_name }}/.zshrc owner={{ user_name }} group={{ user_name }} mode=644
-  become: yes
-  when: ruby_version is defined
+# - name: For zsh with ruby
+#   template: src=../group_files/zshrc_ruby.j2 dest=/home/{{ user_name }}/.zshrc owner={{ user_name }} group={{ user_name }} mode=644
+#   become: yes
+#   when: ruby_version is defined
 
-- name: Remove bash files
-  command: "rm -f .bashrc .bash_logout .profile chdir=/home/{{ user_name }}"
-  become: yes
+# - name: Remove bash files
+#   command: "rm -f .bashrc .bash_logout .profile chdir=/home/{{ user_name }}"
+#   become: yes
 
 - name: Set password
   shell: "echo {{ user_name }}:{{ user_name }} | chpasswd"
