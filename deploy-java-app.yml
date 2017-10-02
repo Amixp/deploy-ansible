@@ -20,5 +20,12 @@
     #   shell: "sv restart {{ app_name }}"
     #   become: yes
 
+    - name: "Restart App"
+      become: yes
+      tags: [update,restart]
+      systemd:
+        name: "{{ app_name }}"
+        state: restarted
+
 # Add enable with systemd
 ## .....

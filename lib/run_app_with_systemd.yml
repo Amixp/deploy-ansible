@@ -1,6 +1,12 @@
 ---
 - name: Copy service file for App
-  tags: update
-  template: src=../_apps/{{ app_name }}/systemd/java.service dest=/etc/systemd/system/{{ app_name }}.service owner=root group=root mode=755
   become: yes
+  template: src=../_apps/{{ app_name }}/systemd/java.service dest=/etc/systemd/system/{{ app_name }}.service owner=root group=root mode=755
 
+- name: Start service
+  become: yes
+  systemd:
+    daemon_reload: yes
+    name: "{{ app_name }}"
+    state: started
+    enabled: yes
