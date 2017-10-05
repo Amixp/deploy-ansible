@@ -12,4 +12,4 @@
     src: "{{ src_path }}/"
     dest: "/home/{{ deploy_user_name }}/apps/{{ app_name }}"
     delete: yes
-    rsync_opts: "--exclude=.git,--exclude=.DS_Store"
+    rsync_opts: "--exclude=.git,--exclude=.DS_Store,--exclude=.idea"

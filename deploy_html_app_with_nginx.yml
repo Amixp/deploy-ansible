@@ -8,9 +8,9 @@
     - include: lib/new_deploy_user.yml user_name={{ deploy_user_name }}
       tags: install
     - include: lib/deploy_html_app.yml
-      # tags: [install,update]
-    - include: lib/run_app_with_nginx.yml
-      tags: install
+      tags: [install,update]
+    # - include: lib/run_app_with_nginx.yml
+    #   tags: install
 
 
 # - name: "Deploy App"
