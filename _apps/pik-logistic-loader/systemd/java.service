@@ -20,9 +20,10 @@ Group={{ user_name }}
 
 ExecStart=/usr/bin/java -Dhttp.proxyHost=proxy.picompany.ru -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy.picompany.ru -Dhttps.proxyPort=8080 -jar /home/{{ user_name }}/apps/{{ app_name }}/app.jar
 ExecStop=/bin/kill -TERM $MAINPID
-TimeoutStopSec=10
+TimeoutStopSec=30
 Restart=always
 RestartSec=30
+StartLimitIntervalSec=0
 
 [Install]
 WantedBy=multi-user.target
