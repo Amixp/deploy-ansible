@@ -1,15 +1,28 @@
 ---
 - name: Make App Dir
   tags: install
-  remote_user: "{{ deploy_user_name }}"
-  file: path=/home/{{ deploy_user_name }}/apps state=directory
+  file: path=/home/{{ user_name }}/apps state=directory
+  become: yes
+  become_user: "{{ user_name }}"
 
 - name: Copy Web dir
   tags: [install,update]
-  remote_user: "{{ deploy_user_name }}"
+  # remote_user: "{{ user_name }}"
   synchronize:
     dest_port: "{{ ssh_port }}"
     src: "{{ src_path }}/"
-    dest: "/home/{{ deploy_user_name }}/apps/{{ app_name }}"
+    dest: "/home/{{ user_name }}/apps/{{ app_name }}"
+    archive: no
+    recursive: yes
     delete: yes
     rsync_opts: "--exclude=.git,--exclude=.DS_Store,--exclude=.idea"
+  become: yes
+
+- name: Set permissions for Web dir
+  file:
+    path: "/home/{{ user_name }}/apps/{{ app_name }}"
+    owner: "{{ user_name }}"
+    group: www-data
+    state: directory
+    recurse: yes
+  become: yes

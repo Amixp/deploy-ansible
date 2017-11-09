@@ -9,6 +9,10 @@ server {
     client_header_buffer_size 128k;
     client_max_body_size      8m;
 
+    index  index.html;
+
+    # root /home/pik-logistic-frontend/apps/pik-logistic-frontend;
+
     location = /favicon.ico {
         log_not_found off;
         access_log    off;
@@ -22,15 +26,27 @@ server {
 
     location /api/v3 {
         access_log off;
+        # access_log /var/log/nginx/api-v3-access.log proxydebug;
+        # error_log /var/log/nginx/api-v3-error.log warn;
+
 
         proxy_pass http://pik_logistic_api_v3;
+        # proxy_redirect off;
 
-        proxy_set_header X-Forwarded-Host $http_host;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        # proxy_set_header Host $host;
+        # proxy_set_header X-Forwarded-Host $http_host;
+        # proxy_set_header X-Forwarded-Proto $scheme;
+        # proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        # proxy_set_header X-Real-IP $remote_addr;
 
-        proxy_http_version 1.1;
+        # proxy_http_version 1.1;
+    }
+
+    location /pik_logistic_front/ {
+        access_log off;
+        # access_log /var/log/nginx/api-v3-access.log proxydebug;
+        # error_log /var/log/nginx/api-v3-error.log warn;
+
+        alias   /home/pik-logistic-frontend/apps/pik-logistic-frontend/;
     }
 }

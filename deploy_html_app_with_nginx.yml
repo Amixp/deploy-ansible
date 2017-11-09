@@ -5,10 +5,11 @@
   hosts: all
   gather_facts: yes
   tasks:
-    - include: lib/new_deploy_user.yml user_name={{ deploy_user_name }}
+    # - include: lib/new_deploy_user.yml user_name={{ deploy_user_name }}
+    - include: lib/new_deploy_user.yml
       tags: install
-    - include: lib/deploy_html_app.yml
-      tags: [install,update]
+    # - include: lib/deploy_html_app.yml
+    #   tags: [install,update]
     # - include: lib/run_app_with_nginx.yml
     #   tags: install
 

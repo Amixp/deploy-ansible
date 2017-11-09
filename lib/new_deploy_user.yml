@@ -25,12 +25,12 @@
 - name: Create ssh directories for deployment user
   file: path=/home/{{ user_name }}/.ssh owner={{ user_name }} group={{ user_name }} mode=700 state=directory
   become: yes
-  when: ssh_install is defined
+  when: ssh_on == 'yes'
 
 - name: For ssh connect as deployment user
   copy: src=../_apps/{{ app_dir }}/keys/authorized_keys_{{ cloud_name }} dest=/home/{{ user_name }}/.ssh/authorized_keys owner={{ user_name }} group={{ user_name }} mode=400
   become: yes
-  when: ssh_install is defined
+  when: ssh_on == 'yes'
 
 - name: Gems setup
   copy: src=../group_files/gemrc dest=/home/{{ user_name }}/.gemrc owner={{ user_name }} group={{ user_name }} mode=644
