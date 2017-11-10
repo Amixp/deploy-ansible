@@ -20,16 +20,16 @@ server {
     access_log /var/log/nginx/{{ app_name }}-ssl-access.log proxydebug;
     error_log  /var/log/nginx/{{ app_name }}-ssl-error.log;
 
-    location = /favicon.ico {
-        log_not_found off;
-        access_log    off;
-    }
-
-    location = /robots.txt {
-        allow         all;
-        log_not_found off;
-        access_log    off;
-    }
+    # location = /favicon.ico {
+    #     log_not_found off;
+    #     access_log    off;
+    # }
+    #
+    # location = /robots.txt {
+    #     allow         all;
+    #     log_not_found off;
+    #     access_log    off;
+    # }
 
     location /api/v3/ {
         proxy_pass http://pik_logistic_api_v3/api/v3/;
