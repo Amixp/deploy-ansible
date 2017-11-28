@@ -18,6 +18,10 @@ server {
         access_log    off;
     }
 
+    location /tsd-updates/ {
+        alias   /home/tsd-updates/apps/tsd-updates/;
+    }
+
     location / {
         root   /usr/share/nginx/{{ app_name }};
         index  index.html index.htm;
