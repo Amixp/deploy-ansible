@@ -1,21 +1,26 @@
 ---
-- include: new_deploy_user.yml
+# - include: new_deploy_user.yml
+
+- name: For bash with ruby
+  template: src=../group_files/bashrc_ruby.j2 dest=/home/{{ user_name }}/.bashrc owner={{ user_name }} group={{ user_name }} mode=644
+  become: yes
+  when: ruby_version is defined
 
 - name: Gems setup
   copy: src=../group_files/gemrc dest=/home/{{ user_name }}/.gemrc owner={{ user_name }} group={{ user_name }} mode=644
-  sudo: yes
+  become: yes
 
-- name: copy deploy private key to VM
-  copy: src=../_apps/{{ user_name }}/deploy_key dest=/home/{{ user_name }}/.ssh/{{ git_repo_from }}_deploy_key owner={{ user_name }} group={{ user_name }} mode=400
-  sudo: yes
-  when: git_repo_from is defined
+# - name: copy deploy private key to VM
+#   copy: src=../_apps/{{ user_name }}/deploy_key dest=/home/{{ user_name }}/.ssh/{{ git_repo_from }}_deploy_key owner={{ user_name }} group={{ user_name }} mode=400
+#   sudo: yes
+#   when: git_repo_from is defined
 
-- name: copy deploy public key to VM
-  copy: src=../_apps/{{ user_name }}/deploy_key.pub dest=/home/{{ user_name }}/.ssh/{{ git_repo_from }}_deploy_key.pub owner={{ user_name }} group={{ user_name }} mode=444
-  sudo: yes
-  when: git_repo_from is defined
+# - name: copy deploy public key to VM
+#   copy: src=../_apps/{{ user_name }}/deploy_key.pub dest=/home/{{ user_name }}/.ssh/{{ git_repo_from }}_deploy_key.pub owner={{ user_name }} group={{ user_name }} mode=444
+#   sudo: yes
+#   when: git_repo_from is defined
 
-- name: copy ssh_config so that {{ git_repo_from }} will be accessed using the injected private key
-  template: src=../group_files/ssh_config.j2 dest=/home/{{ user_name }}/.ssh/config owner={{ user_name }} group={{ user_name }} mode=600
-  sudo: yes
-  when: git_repo_from is defined
+# - name: copy ssh_config so that {{ git_repo_from }} will be accessed using the injected private key
+#   template: src=../group_files/ssh_config.j2 dest=/home/{{ user_name }}/.ssh/config owner={{ user_name }} group={{ user_name }} mode=600
+#   sudo: yes
+#   when: git_repo_from is defined

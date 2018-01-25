@@ -1,8 +1,8 @@
 ---
 - name: Install bundler
   shell: >
-    executable=/bin/zsh source /home/{{ user_name }}/.zshrc;
-    /opt/{{ ruby_version }}/bin/{{ ruby_version }} -S gem install bundler
+    executable=/bin/bash source /home/{{ user_name }}/.bashrc;
+    /opt/ruby/bin/ruby -S gem install bundler
   become: yes
   become_user: "{{ user_name }}"
   environment: "{{ proxy_env }}"

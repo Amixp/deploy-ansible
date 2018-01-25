@@ -1,4 +1,0 @@
----
-ruby_version: 2.0.0-p481
-ruby_url: "http://cache.ruby-lang.org/pub/ruby/2.0/ruby-{{ ruby_version }}.tar.gz"
-ruby_sha256: 00dd3d72435eb77f2bd94537c1738e5219ca42b6d68df3d4f20c183f4bd12d0f

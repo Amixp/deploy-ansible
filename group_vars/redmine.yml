@@ -1,0 +1,15 @@
+---
+ssh_port: 22
+ssh_install: true
+ssh_user:
+  name: 'ubuntu'
+ssh_key: 'picompany.ru'
+time_server: "dc02dsk2.dsk2.picompany.ru"
+ruby_type: ruby
+proxy_name: !!null
+proxy_env: !!null
+# proxy_env:
+  # http_proxy: "http://proxy.picompany.ru:8080"
+  # HTTPS_PROXY: "http://proxy.picompany.ru:8080"
+  # ftp_proxy: "http://proxy.picompany.ru:8080"
+  # no_proxy: "localhost,127.0.0.1,.dsk2.picompany.ru"
