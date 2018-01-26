@@ -1,0 +1,26 @@
+server {
+    listen       80;
+    server_name  redmine.dsk2.picompany.ru;
+
+    root /home/redmine/apps/redmine/public;
+    client_max_body_size      10m; # Max attachemnt size
+    
+    passenger_enabled on;
+    passenger_app_type rack;
+    passenger_load_shell_envvars on;
+    passenger_user redmine;
+    passenger_group redmine;
+    passenger_friendly_error_pages off;
+    passenger_env_var PATH=/opt/ruby/bin:/home/redmine/.gem/ruby-2.4.3/bin:/usr/local/bin:/usr/bin:/bin
+    passenger_env_var GEM_HOME /home/redmine/.gem/ruby-2.4.3;
+    passenger_env_var http_proxy http://proxy.picompany.ru:8080;
+    passenger_env_var https_proxy http://proxy.picompany.ru:8080;
+    passenger_env_var ftp_proxy http://proxy.picompany.ru:8080;
+
+    # redirect server error pages to the static page /50x.html
+    #
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   html;
+    }
+}

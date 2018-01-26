@@ -1,0 +1,7 @@
+# SQL Server configuration example
+production:
+ adapter: sqlserver
+ database: REDMINE
+ host: sql06dsk2.dsk2.picompany.ru
+ username: REDM
+ password: s824tQart5y*v-e3

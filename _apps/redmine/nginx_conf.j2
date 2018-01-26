@@ -1,0 +1,41 @@
+user  redmine;
+worker_processes  1;
+
+worker_rlimit_nofile 20000;
+events {
+    use epoll;
+    worker_connections 20000;
+}
+
+http {
+    passenger_root /home/redmine/.gem/ruby-2.4.3/gems/passenger-5.1.12;
+    passenger_ruby /opt/ruby-2.4.3/bin/ruby;
+    passenger_default_user redmine;
+    passenger_default_group redmine;
+
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    server_tokens off;
+
+    charset utf-8;
+
+    sendfile        on;
+    keepalive_timeout  65;
+
+    client_max_body_size    10m;
+
+    # gzip              on;
+    # gzip_http_version 1.0;
+    # gzip_disable      "MSIE [1-6]\.(?!.*SV1)";
+
+    # gzip_buffers    4 16k;
+    # gzip_comp_level 4;
+    # gzip_min_length 1024;
+
+    # gzip_types    text/plain text/css application/x-javascript text/xml application/xml application/xml+rss text/javascript image/svg+xml;
+    # gzip_proxied  expired no-cache no-store private auth;
+
+    include /home/redmine/apps/nginx/conf/conf.d/*.conf;
+
+}
