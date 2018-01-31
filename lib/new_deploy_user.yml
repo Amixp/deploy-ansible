@@ -32,10 +32,10 @@
   become: yes
   when: ssh_on == 'yes'
 
-- name: Gems setup
-  copy: src=../group_files/gemrc dest=/home/{{ user_name }}/.gemrc owner={{ user_name }} group={{ user_name }} mode=644
-  become: yes
-  when: ruby_type is defined
+# - name: Gems setup
+#   copy: src=../group_files/gemrc dest=/home/{{ user_name }}/.gemrc owner={{ user_name }} group={{ user_name }} mode=644
+#   become: yes
+#   when: ruby_type is defined
 
 - name: copy deploy private key to VM
   copy: src=../_apps/{{ app_name }}/keys/ssh/deploy_key dest=/home/{{ user_name }}/.ssh/{{ git_repo_ssh }}_deploy_key owner={{ user_name }} group={{ user_name }} mode=400

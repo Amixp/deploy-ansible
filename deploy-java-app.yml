@@ -10,6 +10,7 @@
       tags: [install,update]
     - include: lib/run_app_with_systemd.yml user_name={{ app_name }}
       tags: install
+
     # - include: lib/run_app_with_runit.yml user_name={{ app_name }}
     #   tags: install
     # - include: lib/run_app_with_nginx.yml
