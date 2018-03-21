@@ -5,7 +5,7 @@
   hosts: all
   gather_facts: yes
   tasks:
-    - include: lib/new_deploy_user.yml
+    - include_tasks: lib/new_deploy_user.yml
       tags: install
-    - include: lib/deploy_html_app.yml
+    - include_tasks: lib/deploy_html_app.yml
       tags: [install,update]
