@@ -1,0 +1,15 @@
+# file: roles/telegraf/tasks/main.yml
+- import_tasks: _install.yml
+
+- name: Copy config
+  template: 
+    src: telegraf.conf.j2 
+    dest: "{{ telegraf_configuration_dir }}/telegraf.conf"
+    force: yes
+    mode: 0644
+
+- name: Start the Telegraf service
+  service:
+    name: telegraf
+    state: restarted
+    enabled: yes
