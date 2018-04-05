@@ -1,0 +1,17 @@
+---
+- name: Import InfluxData GPG signing key [Debian/Ubuntu]
+  apt_key:
+    url: "{{ repo_host }}/influxdb.key"
+    state: present
+
+- name: Add InfluxData repository [Debian/Ubuntu]
+  apt_repository:
+    repo: deb {{ repo_host }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable
+    state: present
+
+- name: Install InfluxDB packages [Debian/Ubuntu]
+  apt: 
+    name: influxdb
+    state: latest
+    update_cache: yes
+    install_recommends: yes

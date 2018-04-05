@@ -1,9 +1,9 @@
 ---
 # file: roles/common/tasks/main.yml
 
-- include: _locale.yml
-- include: _time.yml
-- include: _ppa_repos.yml
-- include: _sysctl.yml
-- include: _soft.yml
+- import_tasks: _locale.yml
+- import_tasks: _time.yml
+- import_tasks: _ppa_repos.yml
+- import_tasks: _sysctl.yml
+- import_tasks: _soft.yml
 # - include: _proxy.yml

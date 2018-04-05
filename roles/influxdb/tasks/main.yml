@@ -1,0 +1,15 @@
+# file: roles/influxdb/tasks/main.yml
+- import_tasks: _install.yml
+
+- name: Copy config
+  template: 
+    src: influxdb.conf.j2 
+    dest: "{{ influxdb_configuration_dir }}/influxdb.conf"
+    force: yes
+    mode: 0644
+
+- name: Start the InfluxDB service
+  service:
+    name: influxdb
+    state: restarted
+    enabled: yes
