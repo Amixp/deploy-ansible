@@ -6,3 +6,32 @@
 # sudo /bin/systemctl daemon-reload
 # sudo /bin/systemctl enable grafana-server
 # sudo /bin/systemctl start grafana-server
+
+# Copy configs
+- name: Copy configs
+  copy: 
+    src: "{{ item }}"
+    dest: "/etc/grafana/{{ item }}"
+    owner: root
+    group: grafana
+    force: yes
+    mode: 0640
+  with_items:
+    - grafana.ini
+    - ldap.toml
+
+- name: Enable the Grafana service
+  service:
+    name: grafana-server
+    enabled: yes
+    state: restarted
+
+# - name: Stop the Grafana service
+#   service:
+#     name: grafana-server
+#     state: stopped
+
+# - name: Start the Grafana service
+#   service:
+#     name: grafana-server
+#     state: started

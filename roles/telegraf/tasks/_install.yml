@@ -1,4 +1,5 @@
 ---
+# curl -sL https://https://repos.influxdata.com/influxdb.key | sudo apt-key add -
 - name: Import InfluxData GPG signing key [Debian/Ubuntu]
   apt_key:
     url: "{{ repo_host }}/influxdb.key"

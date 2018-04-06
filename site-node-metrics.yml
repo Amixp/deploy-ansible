@@ -1,8 +1,9 @@
-- name: "Install Influxdb, Telegraf"
+- name: "Install Influxdb, Telegraf, Grafana"
   hosts: all
   gather_facts: yes
   become: yes
 
   roles:
-  - influxdb
-  - telegraf
+  # - influxdb
+  # - telegraf
+  - grafana
