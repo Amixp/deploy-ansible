@@ -1,0 +1,31 @@
+server {
+    listen 80;
+    server_name supply.pik-industry.ru;
+    return 301 https://supply.pik-industry.ru/;
+}
+
+# server {
+#     listen 80;
+#     server_name supply.pik-industry.ru;
+
+#     charset utf-8;
+
+#     access_log  /var/log/nginx/{{ app_name }}-access.log  main;
+#     error_log   /var/log/nginx/{{ app_name }}-error.log;
+
+#     location = /favicon.ico {
+#         log_not_found off;
+#         access_log    off;
+#     }
+
+#     location = /robots.txt {
+#         allow         all;
+#         log_not_found off;
+#         access_log    off;
+#     }
+
+#     location / {
+#         root   /usr/share/nginx/html;
+#         index  index.html index.htm;
+#     }
+# }

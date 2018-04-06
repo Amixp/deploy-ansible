@@ -1,0 +1,42 @@
+server {
+    listen 443 ssl;
+    server_name supply.pik-industry.ru;
+
+    access_log /var/log/nginx/{{ app_name }}-ssl-access.log;
+    error_log  /var/log/nginx/{{ app_name }}-ssl-error.log;
+
+    # client_header_buffer_size 128k;
+    # client_max_body_size      8m;
+
+    location = /favicon.ico {
+        log_not_found off;
+        access_log    off;
+    }
+
+    location = /robots.txt {
+        allow         all;
+        log_not_found off;
+        access_log    off;
+    }
+
+    location /supply_RyazanovRV/ {
+        # access_log off;
+
+        proxy_pass http://192.168.100.30:8080/supply_RyazanovRV/;
+        proxy_redirect off;
+        proxy_buffering off;
+
+        proxy_set_header X-Forwarded-Host $http_host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+        proxy_http_version 1.1;
+    }
+
+    location / {
+        root   /usr/share/nginx/{{ app_name }};
+        index  index.html index.htm;
+    }
+}
