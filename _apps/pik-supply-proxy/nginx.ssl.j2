@@ -19,10 +19,10 @@ server {
         access_log    off;
     }
 
-    location /supply_RyazanovRV/ {
+    location /ProdSupply/ {
         # access_log off;
 
-        proxy_pass http://192.168.100.30:8080/supply_RyazanovRV/;
+        proxy_pass http://192.168.100.30:8080/ProdSupply/;
         proxy_redirect off;
         proxy_buffering off;
 
