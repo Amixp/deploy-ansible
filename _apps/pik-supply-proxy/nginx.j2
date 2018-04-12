@@ -1,7 +1,9 @@
 server {
     listen 80;
     server_name supply.pik-industry.ru;
-    return 301 https://supply.pik-industry.ru/;
+    return 301 https://supply.pik-industry.ru$request_uri;
+    root /usr/share/nginx/html;
+    index  index.html;
 }
 
 # server {
