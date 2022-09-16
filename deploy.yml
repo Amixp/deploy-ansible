@@ -1,15 +1,11 @@
 ---
 - name: "Deploy App"
-  hosts: app_nodes
+  hosts: localhost
   gather_facts: yes
   tasks:
   - include: lib/new_deploy_user.yml user_name={{ app_name }}
-  - include: lib/deploy_ruby_app.yml user_name={{ app_name }}
   - include: lib/run_app_with_runit.yml user_name={{ app_name }}
   - include: lib/run_app_with_monit.yml
   - include: lib/run_app_with_nginx.yml
 
-  - name: Restart App
-    tags: update
-    shell: "sv restart {{ app_name }}"
-    sudo: yes
+
